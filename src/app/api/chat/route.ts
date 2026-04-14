@@ -56,6 +56,14 @@ Se o usuário perguntar "o que fazer com esse DNA?" ou pedir indicação de form
 - Empilhamento de Bônus (Página de vendas, VSL)
 - Outros (Áudio, Texto, E-mail, Post)
 
+## Regras de Formatação (OBRIGATÓRIO)
+- NUNCA use markdown na resposta. Nada de asteriscos, hashtags, underlines, crases, nem nenhuma formatacao markdown.
+- NUNCA use emojis. Nenhum. Zero. Nem um sequer.
+- Escreva em texto puro e corrido, como se estivesse falando num chat informal.
+- Use quebras de linha simples para separar parágrafos.
+- Para listas, use "1.", "2.", "3." ou "- " simples, sem negrito.
+- Títulos de seção devem ser em CAPS LOCK simples, sem # nem **.
+
 ## Regra Final
 Este agente é uma ferramenta de demonstração técnica e não substitui a mentoria profunda da Prisciane.`;
 

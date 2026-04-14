@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Chat from "@/components/Chat";
 
 export default function Home() {
@@ -14,14 +15,14 @@ export default function Home() {
         {/* Logo */}
         <div className="px-5 py-5 border-b" style={{ borderColor: "var(--border)" }}>
           <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg glow-pulse"
-              style={{
-                background: "var(--accent)",
-                color: "#fff",
-              }}
-            >
-              P
+            <div className="w-10 h-10 rounded-xl overflow-hidden glow-pulse shrink-0">
+              <Image
+                src="/prisciane-avatar.jpg"
+                alt="Prisciane.AI"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h1 className="text-sm font-semibold tracking-tight" style={{ color: "#fff" }}>
@@ -116,11 +117,14 @@ export default function Home() {
         >
           <div className="flex items-center gap-3">
             {/* Mobile logo */}
-            <div
-              className="md:hidden w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
-              style={{ background: "var(--accent)", color: "#fff" }}
-            >
-              P
+            <div className="md:hidden w-8 h-8 rounded-lg overflow-hidden shrink-0">
+              <Image
+                src="/prisciane-avatar.jpg"
+                alt="Prisciane.AI"
+                width={32}
+                height={32}
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex items-center gap-2 text-sm">
               <span style={{ color: "var(--text-muted)" }}>Workspace</span>

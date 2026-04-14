@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 interface Message {
   role: "user" | "assistant";
@@ -266,17 +267,21 @@ export default function Chat() {
                   >
                     {/* Avatar */}
                     <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold"
+                      className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold overflow-hidden ${msg.role === "assistant" ? "" : ""}`}
                       style={
-                        msg.role === "assistant"
-                          ? { background: "var(--accent)", color: "#fff" }
-                          : {
+                        msg.role === "user"
+                          ? {
                               background: "var(--surface-light)",
                               color: "var(--text-secondary)",
                             }
+                          : {}
                       }
                     >
-                      {msg.role === "assistant" ? "P" : "U"}
+                      {msg.role === "assistant" ? (
+                        <Image src="/prisciane-avatar.jpg" alt="P" width={28} height={28} className="w-full h-full object-cover" />
+                      ) : (
+                        "U"
+                      )}
                     </div>
 
                     {/* Content */}
@@ -312,11 +317,8 @@ export default function Chat() {
                     className="flex gap-3 py-4 px-3 rounded-xl"
                     style={{ background: "var(--surface-raised)" }}
                   >
-                    <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold"
-                      style={{ background: "var(--accent)", color: "#fff" }}
-                    >
-                      P
+                    <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0">
+                      <Image src="/prisciane-avatar.jpg" alt="P" width={28} height={28} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1">
                       <p
