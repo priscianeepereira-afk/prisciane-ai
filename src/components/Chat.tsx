@@ -7,6 +7,58 @@ interface Message {
   content: string;
 }
 
+const QUICK_ACTIONS = [
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="23 7 16 12 23 17 23 7"/>
+        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+      </svg>
+    ),
+    title: "Analisar Reels",
+    desc: "Identificar DNA de um Reels viral",
+    prompt: "Quero analisar um Reels que viralizou",
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+        <line x1="8" y1="21" x2="16" y2="21"/>
+        <line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+    ),
+    title: "Analisar Anuncio",
+    desc: "Extrair o que converte no criativo",
+    prompt: "Tenho um anuncio que converteu bem",
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+        <line x1="8" y1="23" x2="16" y2="23"/>
+      </svg>
+    ),
+    title: "Analisar Live",
+    desc: "Entender o DNA de uma live de sucesso",
+    prompt: "Preciso entender o DNA de uma live",
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+    ),
+    title: "Isolar Copy",
+    desc: "Separar os blocos de persuasao vencedores",
+    prompt: "Quero isolar o que funcionou na minha copy",
+  },
+];
+
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -80,164 +132,281 @@ export default function Chat() {
     }
   }
 
+  function handleQuickAction(prompt: string) {
+    setInput(prompt);
+  }
+
   return (
     <div className="flex flex-col h-full">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="max-w-3xl mx-auto space-y-6">
-          {messages.length === 0 && (
-            <div className="text-center py-20">
-              <div className="text-5xl mb-4">&#x1f9e0;</div>
-              <h2
-                className="text-2xl font-bold mb-2"
-                style={{ color: "var(--accent)" }}
-              >
-                Prisciane.AI
-              </h2>
-              <p className="text-gray-400 mb-8">Sua Mentora De Bolso</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
-                {[
-                  "Quero analisar um Reels que viralizou",
-                  "Tenho um anuncio que converteu bem",
-                  "Preciso entender o DNA de uma live",
-                  "Quero isolar o que funcionou na minha copy",
-                ].map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => setInput(suggestion)}
-                    className="text-left text-sm p-3 rounded-lg border transition-all hover:border-[var(--accent)] hover:bg-[var(--surface-light)]"
-                    style={{ borderColor: "var(--border)" }}
+      <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6">
+        <div className="max-w-2xl mx-auto">
+          {messages.length === 0 ? (
+            <div className="animate-fade-in">
+              {/* Hero Welcome */}
+              <div className="pt-8 sm:pt-16 pb-10">
+                <div className="gradient-hero rounded-2xl p-6 sm:p-8 mb-8">
+                  <p
+                    className="text-sm font-medium mb-2 tracking-wide uppercase"
+                    style={{ color: "var(--accent)" }}
                   >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex gap-3 animate-fade-in ${
-                msg.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              {msg.role === "assistant" && (
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm font-bold"
-                  style={{
-                    background: "var(--accent)",
-                    color: "var(--background)",
-                  }}
-                >
-                  P
+                    Bem-vindo ao workspace
+                  </p>
+                  <h2
+                    className="text-2xl sm:text-3xl font-bold tracking-tight mb-3"
+                    style={{ color: "var(--foreground)" }}
+                  >
+                    O que vamos analisar hoje?
+                  </h2>
+                  <p
+                    className="text-sm leading-relaxed max-w-md"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    Envie um conteudo e eu isolo o DNA de sucesso usando a
+                    metodologia V.I.R.A.L. da Prisciane.
+                  </p>
                 </div>
-              )}
-              <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
-                  msg.role === "user"
-                    ? "bg-[var(--accent)] text-black rounded-br-sm"
-                    : "bg-[var(--surface-light)] text-[var(--foreground)] rounded-bl-sm"
-                }`}
-              >
-                {msg.content}
-              </div>
-              {msg.role === "user" && (
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm"
-                  style={{
-                    background: "var(--surface-light)",
-                    color: "var(--foreground)",
-                  }}
-                >
-                  U
-                </div>
-              )}
-            </div>
-          ))}
 
-          {isLoading && (
-            <div className="flex gap-3 animate-fade-in">
+                {/* Quick Action Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {QUICK_ACTIONS.map((action) => (
+                    <button
+                      key={action.title}
+                      onClick={() => handleQuickAction(action.prompt)}
+                      className="group text-left p-4 rounded-xl border card-hover"
+                      style={{
+                        background: "var(--surface-raised)",
+                        borderColor: "var(--border)",
+                      }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors group-hover:bg-[var(--accent)]"
+                          style={{
+                            background: "var(--surface-light)",
+                            color: "var(--text-secondary)",
+                          }}
+                        >
+                          <span className="group-hover:text-white transition-colors">
+                            {action.icon}
+                          </span>
+                        </div>
+                        <div>
+                          <p
+                            className="text-sm font-semibold mb-0.5 group-hover:text-[var(--accent)] transition-colors"
+                            style={{ color: "var(--foreground)" }}
+                          >
+                            {action.title}
+                          </p>
+                          <p
+                            className="text-xs"
+                            style={{ color: "var(--text-muted)" }}
+                          >
+                            {action.desc}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Stats Bar */}
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm font-bold"
+                className="flex items-center justify-between px-4 py-3 rounded-xl border"
                 style={{
-                  background: "var(--accent)",
-                  color: "var(--background)",
+                  background: "var(--surface-raised)",
+                  borderColor: "var(--border)",
                 }}
               >
-                P
-              </div>
-              <div className="bg-[var(--surface-light)] rounded-2xl rounded-bl-sm px-4 py-3">
-                <div className="flex gap-1.5">
-                  <span
-                    className="w-2 h-2 rounded-full animate-bounce"
-                    style={{
-                      background: "var(--accent)",
-                      animationDelay: "0ms",
-                    }}
-                  />
-                  <span
-                    className="w-2 h-2 rounded-full animate-bounce"
-                    style={{
-                      background: "var(--accent)",
-                      animationDelay: "150ms",
-                    }}
-                  />
-                  <span
-                    className="w-2 h-2 rounded-full animate-bounce"
-                    style={{
-                      background: "var(--accent)",
-                      animationDelay: "300ms",
-                    }}
-                  />
+                <div className="flex items-center gap-6">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
+                      Pilares
+                    </p>
+                    <p className="text-sm font-semibold" style={{ color: "var(--accent)" }}>
+                      V.I.R.A.L.
+                    </p>
+                  </div>
+                  <div className="w-px h-8" style={{ background: "var(--border)" }} />
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
+                      Modelo
+                    </p>
+                    <p className="text-sm font-semibold" style={{ color: "var(--foreground)" }}>
+                      Claude Sonnet
+                    </p>
+                  </div>
+                  <div className="hidden sm:block w-px h-8" style={{ background: "var(--border)" }} />
+                  <div className="hidden sm:block">
+                    <p className="text-[10px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
+                      Status
+                    </p>
+                    <p className="text-sm font-semibold text-green-500">
+                      Operacional
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
+          ) : (
+            /* Messages */
+            <div className="space-y-1 pt-4">
+              {messages.map((msg, i) => (
+                <div key={i} className="animate-fade-in">
+                  {/* Message Row */}
+                  <div
+                    className="flex gap-3 py-4 px-3 rounded-xl transition-colors"
+                    style={{
+                      background:
+                        msg.role === "assistant"
+                          ? "var(--surface-raised)"
+                          : "transparent",
+                    }}
+                  >
+                    {/* Avatar */}
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold"
+                      style={
+                        msg.role === "assistant"
+                          ? { background: "var(--accent)", color: "#fff" }
+                          : {
+                              background: "var(--surface-light)",
+                              color: "var(--text-secondary)",
+                            }
+                      }
+                    >
+                      {msg.role === "assistant" ? "P" : "U"}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="text-[11px] font-medium mb-1"
+                        style={{
+                          color:
+                            msg.role === "assistant"
+                              ? "var(--accent)"
+                              : "var(--text-muted)",
+                        }}
+                      >
+                        {msg.role === "assistant"
+                          ? "Prisciane.AI"
+                          : "Voce"}
+                      </p>
+                      <div
+                        className="text-sm leading-relaxed whitespace-pre-wrap"
+                        style={{ color: "var(--foreground)" }}
+                      >
+                        {msg.content}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Loading */}
+              {isLoading && (
+                <div className="animate-fade-in">
+                  <div
+                    className="flex gap-3 py-4 px-3 rounded-xl"
+                    style={{ background: "var(--surface-raised)" }}
+                  >
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold"
+                      style={{ background: "var(--accent)", color: "#fff" }}
+                    >
+                      P
+                    </div>
+                    <div className="flex-1">
+                      <p
+                        className="text-[11px] font-medium mb-2"
+                        style={{ color: "var(--accent)" }}
+                      >
+                        Prisciane.AI
+                      </p>
+                      <div className="flex gap-1.5 py-1">
+                        {[0, 1, 2].map((i) => (
+                          <span
+                            key={i}
+                            className="w-1.5 h-1.5 rounded-full"
+                            style={{
+                              background: "var(--accent)",
+                              animation: `pulse-dot 1.4s ease-in-out ${i * 0.2}s infinite`,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
           )}
-          <div ref={messagesEndRef} />
         </div>
       </div>
 
       {/* Input Area */}
       <div
-        className="border-t p-4"
-        style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+        className="px-4 sm:px-8 py-4 border-t"
+        style={{
+          borderColor: "var(--border)",
+          background: "var(--surface)",
+        }}
       >
         <form
           onSubmit={sendMessage}
-          className="max-w-3xl mx-auto flex gap-3 items-end"
+          className="max-w-2xl mx-auto"
         >
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Manda a parada pra eu analisar..."
-            rows={1}
-            disabled={isLoading}
-            className="flex-1 resize-none rounded-xl px-4 py-3 text-sm outline-none placeholder-gray-500 disabled:opacity-50"
-            style={{
-              background: "var(--surface-light)",
-              color: "var(--foreground)",
-              border: "1px solid var(--border)",
-            }}
-          />
-          <button
-            type="submit"
-            disabled={!input.trim() || isLoading}
-            className="px-5 py-3 rounded-xl text-sm font-semibold transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:brightness-110"
-            style={{
-              background: "var(--accent)",
-              color: "var(--background)",
-            }}
+          <div
+            className="flex items-end gap-2 rounded-xl p-2 border-glow"
+            style={{ background: "var(--surface-raised)" }}
           >
-            Enviar
-          </button>
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Descreva o conteudo que quer analisar..."
+              rows={1}
+              disabled={isLoading}
+              className="flex-1 resize-none bg-transparent px-3 py-2 text-sm outline-none disabled:opacity-50"
+              style={{
+                color: "var(--foreground)",
+              }}
+            />
+            <button
+              type="submit"
+              disabled={!input.trim() || isLoading}
+              className="p-2.5 rounded-lg transition-all disabled:opacity-20 disabled:cursor-not-allowed hover:brightness-110 shrink-0"
+              style={{
+                background: input.trim() ? "var(--accent)" : "var(--surface-light)",
+                color: "#fff",
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </button>
+          </div>
+          <p
+            className="text-center text-[11px] mt-2"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Powered by Metodologia V.I.R.A.L. da Prisciane
+          </p>
         </form>
-        <p className="text-center text-xs text-gray-600 mt-2 max-w-3xl mx-auto">
-          Prisciane.AI e uma ferramenta de demonstracao tecnica. Nao substitui a
-          mentoria profunda da Prisciane.
-        </p>
       </div>
     </div>
   );
