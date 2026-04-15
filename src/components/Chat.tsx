@@ -133,7 +133,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   let imgCirculo = "";
   try {
     imgMarcaDagua = await loadImageAsBase64("/marcadagia.png");
-    imgCirculo = await loadImageAsBase64("/circulo.png");
+    imgCirculo = await loadImageAsBase64("/circulo-semfundo.png");
   } catch {}
 
   // Watermark on first page
@@ -628,33 +628,41 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
 
               {/* Download buttons - only after full analysis */}
               {analysisReady && !isLoading && (
-                <div className="flex items-center gap-3 px-4 pt-3 animate-fade-in">
-                  <button
-                    onClick={() => generatePDF(messages)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all hover:brightness-110"
-                    style={{ background: "var(--surface-light)", color: "var(--accent-light)", border: "1px solid var(--border)" }}
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                      <polyline points="14 2 14 8 20 8"/>
-                      <line x1="16" y1="13" x2="8" y2="13"/>
-                      <line x1="16" y1="17" x2="8" y2="17"/>
-                    </svg>
-                    Baixar PDF
-                  </button>
-                  <button
-                    onClick={() => generateTXT(messages)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all hover:brightness-110"
-                    style={{ background: "var(--surface-light)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                      <polyline points="7 10 12 15 17 10"/>
-                      <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Baixar TXT
-                  </button>
-                </div>
+                <>
+                  <div className="flex items-center gap-3 px-4 pt-3 animate-fade-in">
+                    <button
+                      onClick={() => generatePDF(messages)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all hover:brightness-110"
+                      style={{ background: "var(--surface-light)", color: "var(--accent-light)", border: "1px solid var(--border)" }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                      </svg>
+                      Baixar PDF
+                    </button>
+                    <button
+                      onClick={() => generateTXT(messages)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all hover:brightness-110"
+                      style={{ background: "var(--surface-light)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                      </svg>
+                      Baixar TXT
+                    </button>
+                  </div>
+                  <div className="px-4 pt-4 pb-2">
+                    <div className="divider-gold mb-4" />
+                    <p className="text-center text-[11px] italic" style={{ color: "var(--text-muted)" }}>
+                      Análise concluída. Baixe seu diagnóstico e inicie uma nova análise quando quiser.
+                    </p>
+                  </div>
+                </>
               )}
 
               {/* Loading */}
@@ -691,7 +699,7 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
       </div>
 
       {/* Input Area */}
-      {!readOnly && (
+      {!readOnly && !analysisReady && (
         <div className="px-4 sm:px-8 py-4" style={{ background: "rgba(10, 8, 6, 0.9)", backdropFilter: "blur(12px)" }}>
           <div className="shimmer-line mb-4 max-w-2xl mx-auto" />
           <form onSubmit={sendMessage} className="max-w-2xl mx-auto">
