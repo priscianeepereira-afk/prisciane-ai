@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { jsPDF } from "jspdf";
+import type { jsPDF as JsPDFType } from "jspdf";
 
 interface Message {
   role: "user" | "assistant";
@@ -102,7 +102,7 @@ async function loadImageAsBase64(url: string): Promise<string> {
   });
 }
 
-function addWatermark(doc: jsPDF, imgData: string) {
+function addWatermark(doc: JsPDFType, imgData: string) {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   // Proporção A4 (210x297), ocupa a página toda
@@ -120,6 +120,7 @@ function addWatermark(doc: jsPDF, imgData: string) {
 }
 
 async function generatePDF(messages: Message[]): Promise<void> {
+  const { jsPDF } = await import("jspdf");
   const date = new Date().toLocaleDateString("pt-BR");
   const { content, name } = getAnalysisContent(messages);
   const doc = new jsPDF();
