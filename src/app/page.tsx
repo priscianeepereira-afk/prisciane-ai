@@ -71,7 +71,7 @@ export default function Home() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col min-w-0 gradient-warm watermark-bg">
+      <main className="flex-1 flex flex-col min-w-0 gradient-warm">
         {/* Top Header */}
         <header className="flex items-center justify-between px-6 py-3 border-b shrink-0" style={{ borderColor: "var(--border)", background: "rgba(10, 8, 6, 0.8)", backdropFilter: "blur(12px)" }}>
           <div className="flex items-center gap-3">
