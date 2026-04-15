@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
 
 export default function Sobre() {
   return (
@@ -20,6 +21,7 @@ export default function Sobre() {
             <span className="font-medium" style={{ color: "var(--accent-light)" }}>Sobre</span>
           </div>
         </header>
+        <MobileNav activePage="sobre" />
 
         <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-8">
           <div className="max-w-2xl mx-auto animate-fade-in">

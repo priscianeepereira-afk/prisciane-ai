@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useCallback } from "react";
 import Chat from "@/components/Chat";
 import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
 
 interface Message {
   role: "user" | "assistant";
@@ -74,6 +75,7 @@ export default function Home() {
             </div>
           </div>
         </header>
+        <MobileNav activePage="chat" />
 
         <div className="flex-1 overflow-hidden">
           <Chat

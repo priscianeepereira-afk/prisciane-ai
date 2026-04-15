@@ -516,16 +516,16 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
                 </div>
 
                 {/* Quick Actions */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3 text-left">
                   {QUICK_ACTIONS.map((action) => (
                     <button
                       key={action.title}
                       onClick={() => handleQuickAction(action.prompt)}
-                      className="group p-4 rounded-2xl card-luxury"
+                      className="group p-3 sm:p-4 rounded-xl sm:rounded-2xl card-luxury"
                     >
-                      <div className="flex items-start gap-3.5">
+                      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3.5">
                         <div
-                          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-[var(--accent)] group-hover:text-white"
+                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-[var(--accent)] group-hover:text-white"
                           style={{
                             background: "var(--surface-light)",
                             color: "var(--text-muted)",
@@ -533,14 +533,14 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
                         >
                           {action.icon}
                         </div>
-                        <div>
+                        <div className="text-center sm:text-left">
                           <p
-                            className="text-[13px] font-medium mb-0.5 transition-colors group-hover:text-[var(--accent-light)]"
+                            className="text-[12px] sm:text-[13px] font-medium mb-0.5 transition-colors group-hover:text-[var(--accent-light)]"
                             style={{ color: "var(--foreground)" }}
                           >
                             {action.title}
                           </p>
-                          <p className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                          <p className="text-[10px] sm:text-[11px] hidden sm:block" style={{ color: "var(--text-muted)" }}>
                             {action.desc}
                           </p>
                         </div>

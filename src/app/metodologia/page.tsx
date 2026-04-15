@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
 
 const PILARES = [
   {
@@ -52,6 +53,7 @@ export default function Metodologia() {
             <span className="font-medium" style={{ color: "var(--accent-light)" }}>Metodologia</span>
           </div>
         </header>
+        <MobileNav activePage="metodologia" />
 
         <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-8">
           <div className="max-w-2xl mx-auto animate-fade-in">
