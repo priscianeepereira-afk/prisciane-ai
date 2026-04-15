@@ -67,7 +67,7 @@ export default function Sobre() {
       </aside>
 
       {/* Main */}
-      <main className="flex-1 flex flex-col min-w-0 gradient-warm">
+      <main className="flex-1 flex flex-col min-w-0 gradient-warm watermark-bg">
         <header
           className="flex items-center justify-between px-6 py-3 border-b shrink-0"
           style={{ borderColor: "var(--border)", background: "rgba(10, 8, 6, 0.8)", backdropFilter: "blur(12px)" }}
