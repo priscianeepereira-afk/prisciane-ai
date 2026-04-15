@@ -106,7 +106,7 @@ export default function Metodologia() {
               style={{
                 background: "var(--surface-raised)",
                 borderColor: "var(--accent)",
-                boxShadow: "0 0 30px rgba(232, 98, 44, 0.05)",
+                boxShadow: "0 0 30px rgba(178, 81, 27, 0.05)",
               }}
             >
               <p className="text-[11px] font-medium mb-2 tracking-[0.2em] uppercase" style={{ color: "var(--accent)" }}>

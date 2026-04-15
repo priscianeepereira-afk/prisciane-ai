@@ -3,11 +3,11 @@
 :root {
   --background: #080604;
   --foreground: #f5f0e8;
-  --accent: #E8622C;
-  --accent-light: #F0753F;
-  --accent-dark: #C74E1E;
-  --accent-glow: rgba(232, 98, 44, 0.12);
-  --accent-glow-strong: rgba(232, 98, 44, 0.25);
+  --accent: #B2511B;
+  --accent-light: #C45E25;
+  --accent-dark: #5C2700;
+  --accent-glow: rgba(178, 81, 27, 0.12);
+  --accent-glow-strong: rgba(178, 81, 27, 0.25);
   --gold: #C8963E;
   --gold-light: rgba(200, 150, 62, 0.15);
   --surface: #0e0c08;
@@ -78,13 +78,13 @@ body {
 }
 
 @keyframes glow-breathe {
-  0%, 100% { box-shadow: 0 0 6px rgba(232, 98, 44, 0.15); }
-  50% { box-shadow: 0 0 20px rgba(232, 98, 44, 0.35); }
+  0%, 100% { box-shadow: 0 0 6px rgba(178, 81, 27, 0.15); }
+  50% { box-shadow: 0 0 20px rgba(178, 81, 27, 0.35); }
 }
 
 @keyframes border-glow-pulse {
   0%, 100% { border-color: var(--border); }
-  50% { border-color: rgba(232, 98, 44, 0.3); }
+  50% { border-color: rgba(178, 81, 27, 0.3); }
 }
 
 .animate-fade-in {
@@ -101,12 +101,12 @@ body {
 
 /* Gradient backgrounds */
 .gradient-warm {
-  background: radial-gradient(ellipse at 30% 20%, rgba(232, 98, 44, 0.04) 0%, transparent 60%),
+  background: radial-gradient(ellipse at 30% 20%, rgba(178, 81, 27, 0.04) 0%, transparent 60%),
               radial-gradient(ellipse at 80% 80%, rgba(200, 150, 62, 0.02) 0%, transparent 50%);
 }
 
 .gradient-hero {
-  background: radial-gradient(ellipse at 20% 50%, rgba(232, 98, 44, 0.07) 0%, transparent 50%),
+  background: radial-gradient(ellipse at 20% 50%, rgba(178, 81, 27, 0.07) 0%, transparent 50%),
               radial-gradient(ellipse at 90% 20%, rgba(200, 150, 62, 0.04) 0%, transparent 40%);
 }
 
@@ -130,9 +130,9 @@ body {
 }
 
 .card-luxury:hover {
-  border-color: rgba(232, 98, 44, 0.3);
-  box-shadow: 0 4px 24px rgba(232, 98, 44, 0.06),
-              inset 0 1px 0 rgba(232, 98, 44, 0.05);
+  border-color: rgba(178, 81, 27, 0.3);
+  box-shadow: 0 4px 24px rgba(178, 81, 27, 0.06),
+              inset 0 1px 0 rgba(178, 81, 27, 0.05);
   transform: translateY(-1px);
 }
 
@@ -144,8 +144,8 @@ body {
 
 .input-luxury:focus-within {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(232, 98, 44, 0.08),
-              0 0 16px rgba(232, 98, 44, 0.06);
+  box-shadow: 0 0 0 3px rgba(178, 81, 27, 0.08),
+              0 0 16px rgba(178, 81, 27, 0.06);
 }
 
 /* Particles effect */
@@ -210,7 +210,7 @@ body {
 
 /* Gold text gradient */
 .text-gold {
-  background: linear-gradient(135deg, #F0753F 0%, #E8622C 50%, #C74E1E 100%);
+  background: linear-gradient(135deg, #B2511B 0%, #8A3D12 50%, #5C2700 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -238,6 +238,11 @@ body {
   -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   filter: grayscale(100%);
+}
+
+/* Gradient button */
+.btn-gradient {
+  background: linear-gradient(145deg, #B2511B, #5C2700);
 }
 
 /* Divider */

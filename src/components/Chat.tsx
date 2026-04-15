@@ -146,14 +146,14 @@ async function generatePDF(messages: Message[]): Promise<void> {
   y += 8;
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
-  doc.setTextColor(232, 98, 44);
+  doc.setTextColor(178, 81, 27);
   doc.text(name, margin, y);
   y += 7;
   doc.setFontSize(10);
   doc.setTextColor(150);
   doc.text(`Prisciane.AI  |  ${date}`, margin, y);
   y += 5;
-  doc.setDrawColor(232, 98, 44);
+  doc.setDrawColor(178, 81, 27);
   doc.setLineWidth(0.5);
   doc.line(margin, y, pageWidth - margin, y);
   y += 12;
@@ -181,7 +181,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   }
 
   y += 15;
-  doc.setDrawColor(232, 98, 44);
+  doc.setDrawColor(178, 81, 27);
   doc.setLineWidth(0.3);
   doc.line(margin, y, pageWidth - margin, y);
   y += 12;
@@ -189,7 +189,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   // "mas lembre-se:"
   doc.setFontSize(11);
   doc.setFont("helvetica", "italic");
-  doc.setTextColor(232, 98, 44);
+  doc.setTextColor(178, 81, 27);
   doc.text("mas lembre-se:", pageWidth / 2, y, { align: "center" });
   y += 8;
 
