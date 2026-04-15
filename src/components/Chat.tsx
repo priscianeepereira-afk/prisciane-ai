@@ -112,7 +112,7 @@ function addWatermark(doc: jsPDF, imgData: string) {
   const y = 0;
 
   // @ts-expect-error - jsPDF GState
-  const gState = new doc.GState({ opacity: 0.035 });
+  const gState = new doc.GState({ opacity: 0.09 });
   doc.saveGraphicsState();
   doc.setGState(gState);
   doc.addImage(imgData, "PNG", x, y, wmWidth, wmHeight);
