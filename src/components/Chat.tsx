@@ -163,8 +163,7 @@ export default function Chat() {
                     className="text-sm leading-relaxed max-w-md mx-auto"
                     style={{ color: "var(--text-secondary)" }}
                   >
-                    Envie seu conteudo e eu isolo o DNA de sucesso.
-                    Sem achismo, sem enrolacao.
+                    Envie seu conteudo para extrairmos os pontos fortes dele e produzir Criativos Virais capazes de triplicar seu ROAS
                   </p>
                 </div>
 
