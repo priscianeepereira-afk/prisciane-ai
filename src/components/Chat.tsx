@@ -199,14 +199,13 @@ async function generatePDF(messages: Message[]): Promise<void> {
   doc.setTextColor(120);
   const reminder = "O agente entrega o DNA mastigado. A inteligencia de transposicao e sua.";
   doc.text(reminder, pageWidth / 2, y, { align: "center" });
-  y += 12;
+  y += 6;
 
   // Seal - circular image (proporção real 1080x1350)
   if (imgCirculo) {
-    const sealWidth = 28;
+    const sealWidth = 42;
     const sealHeight = sealWidth * 1.25;
     const sealX = (pageWidth - sealWidth) / 2;
-    y += 2;
     doc.addImage(imgCirculo, "PNG", sealX, y, sealWidth, sealHeight);
     y += sealHeight + 4;
   }
