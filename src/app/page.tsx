@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Chat from "@/components/Chat";
 
 export default function Home() {
@@ -27,8 +28,8 @@ export default function Home() {
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-6 space-y-1">
-          <a
-            href="#"
+          <Link
+            href="/"
             className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] font-medium"
             style={{ background: "var(--accent-glow)", color: "var(--accent-light)" }}
           >
@@ -36,9 +37,9 @@ export default function Home() {
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
             </svg>
             Analise V.I.R.A.L.
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            href="/metodologia"
             className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] transition-colors hover:bg-[var(--surface-light)]"
             style={{ color: "var(--text-muted)" }}
           >
@@ -46,8 +47,8 @@ export default function Home() {
               <path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/>
             </svg>
             Metodologia
-          </a>
-          <a
+          </Link>
+          <Link
             href="#"
             className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] transition-colors hover:bg-[var(--surface-light)]"
             style={{ color: "var(--text-muted)" }}
@@ -56,7 +57,7 @@ export default function Home() {
               <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
             </svg>
             Sobre
-          </a>
+          </Link>
         </nav>
 
         {/* Footer */}
