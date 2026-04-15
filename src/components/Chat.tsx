@@ -124,13 +124,6 @@ export default function Chat() {
     }
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage(e);
-    }
-  }
-
   function handleQuickAction(prompt: string) {
     setInput(prompt);
   }
@@ -316,7 +309,6 @@ export default function Chat() {
               ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
               placeholder="Descreva o conteúdo que quer analisar..."
               rows={1}
               disabled={isLoading}
