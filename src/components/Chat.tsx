@@ -328,26 +328,6 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
                 </div>
               </div>
 
-              {/* Divider */}
-              <div className="divider-gold mb-6" />
-
-              {/* Stats */}
-              <div className="flex items-center justify-center gap-8 py-2">
-                <div className="text-center">
-                  <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--text-muted)" }}>Pilares</p>
-                  <p className="text-xs font-semibold mt-0.5" style={{ color: "var(--accent)" }}>V.I.R.A.L.</p>
-                </div>
-                <div className="w-px h-6" style={{ background: "var(--border)" }} />
-                <div className="text-center">
-                  <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--text-muted)" }}>Modelo</p>
-                  <p className="text-xs font-semibold mt-0.5" style={{ color: "var(--foreground)" }}>Claude Sonnet</p>
-                </div>
-                <div className="hidden sm:block w-px h-6" style={{ background: "var(--border)" }} />
-                <div className="hidden sm:block text-center">
-                  <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--text-muted)" }}>Status</p>
-                  <p className="text-xs font-semibold mt-0.5 text-green-500">Ativo</p>
-                </div>
-              </div>
             </div>
           ) : (
             /* Messages */
