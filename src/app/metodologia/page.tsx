@@ -78,7 +78,7 @@ export default function Metodologia() {
                   <div className="flex items-start gap-4">
                     <div
                       className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 text-lg font-bold heading-serif"
-                      style={{ background: "linear-gradient(145deg, #D4B04C, #C9A84C, #A8872E)", color: "#fff" }}
+                      style={{ background: "#A0622F", color: "#fff" }}
                     >
                       {pilar.letra}
                     </div>
