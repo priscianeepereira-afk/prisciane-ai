@@ -105,11 +105,11 @@ async function loadImageAsBase64(url: string): Promise<string> {
 function addWatermark(doc: jsPDF, imgData: string) {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  // Imagem grande, ocupando a página, proporção real 1080x1350
-  const wmWidth = pageWidth * 0.65;
-  const wmHeight = wmWidth * 1.25;
-  const x = (pageWidth - wmWidth) / 2;
-  const y = (pageHeight - wmHeight) / 2;
+  // Proporção A4 (210x297), ocupa a página toda
+  const wmWidth = pageWidth;
+  const wmHeight = pageHeight;
+  const x = 0;
+  const y = 0;
 
   // @ts-expect-error - jsPDF GState
   const gState = new doc.GState({ opacity: 0.035 });
@@ -129,15 +129,15 @@ async function generatePDF(messages: Message[]): Promise<void> {
   let y = 25;
 
   // Load images
-  let imgSemFundo = "";
+  let imgMarcaDagua = "";
   let imgCirculo = "";
   try {
-    imgSemFundo = await loadImageAsBase64("/prisciane-semfundo.png");
+    imgMarcaDagua = await loadImageAsBase64("/marcadagia.png");
     imgCirculo = await loadImageAsBase64("/circulo.png");
   } catch {}
 
   // Watermark on first page
-  if (imgSemFundo) addWatermark(doc, imgSemFundo);
+  if (imgMarcaDagua) addWatermark(doc, imgMarcaDagua);
 
   // Header
   doc.setFontSize(18);
@@ -166,7 +166,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   lines.forEach((line: string) => {
     if (y > 265) {
       doc.addPage();
-      if (imgSemFundo) addWatermark(doc, imgSemFundo);
+      if (imgMarcaDagua) addWatermark(doc, imgMarcaDagua);
       y = 20;
     }
     doc.text(line, margin, y);
@@ -176,7 +176,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   // Signature section
   if (y > 230) {
     doc.addPage();
-    if (imgSemFundo) addWatermark(doc, imgSemFundo);
+    if (imgMarcaDagua) addWatermark(doc, imgMarcaDagua);
     y = 20;
   }
 
