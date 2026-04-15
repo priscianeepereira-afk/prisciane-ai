@@ -189,6 +189,124 @@ const QUICK_ACTIONS = [
   },
 ];
 
+interface ParsedOption {
+  pergunta: string;
+  opcoes: string[];
+}
+
+function parseOptionsBlocks(text: string): { parts: (string | ParsedOption)[] } {
+  const parts: (string | ParsedOption)[] = [];
+  const regex = /\[OPCOES\]\s*\n([\s\S]*?)\[\/OPCOES\]/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      const before = text.slice(lastIndex, match.index).trim();
+      if (before) parts.push(before);
+    }
+    const block = match[1].trim();
+    const lines = block.split("\n").map((l) => l.trim()).filter(Boolean);
+    const perguntaLine = lines.find((l) => l.startsWith("pergunta:"));
+    const pergunta = perguntaLine ? perguntaLine.replace("pergunta:", "").trim() : "";
+    const opcoes = lines
+      .filter((l) => /^\d+:/.test(l))
+      .map((l) => l.replace(/^\d+:\s*/, "").trim());
+    parts.push({ pergunta, opcoes });
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    const remaining = text.slice(lastIndex).trim();
+    if (remaining) parts.push(remaining);
+  }
+
+  return { parts };
+}
+
+function OptionButtons({
+  pergunta,
+  opcoes,
+  onSelect,
+  disabled,
+}: {
+  pergunta: string;
+  opcoes: string[];
+  onSelect: (val: string) => void;
+  disabled: boolean;
+}) {
+  const [otherValue, setOtherValue] = useState("");
+  const [showOther, setShowOther] = useState(false);
+
+  return (
+    <div className="my-3">
+      {pergunta && (
+        <p className="text-[13px] font-medium mb-2.5" style={{ color: "var(--foreground)" }}>
+          {pergunta}
+        </p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        {opcoes.map((op) => (
+          <button
+            key={op}
+            onClick={() => !disabled && onSelect(op)}
+            disabled={disabled}
+            className="px-4 py-2 rounded-xl text-[12px] font-medium transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{
+              background: "var(--surface-light)",
+              color: "var(--accent-light)",
+              border: "1px solid var(--border-light)",
+            }}
+          >
+            {op}
+          </button>
+        ))}
+        {!disabled && (
+          <button
+            onClick={() => setShowOther(!showOther)}
+            className="px-4 py-2 rounded-xl text-[12px] transition-all"
+            style={{
+              background: "transparent",
+              color: "var(--text-muted)",
+              border: "1px dashed var(--border-light)",
+            }}
+          >
+            Outro
+          </button>
+        )}
+      </div>
+      {showOther && !disabled && (
+        <div className="flex gap-2 mt-2">
+          <input
+            type="text"
+            value={otherValue}
+            onChange={(e) => setOtherValue(e.target.value)}
+            placeholder="Digite sua resposta..."
+            className="flex-1 px-3 py-2 rounded-xl text-[12px] outline-none"
+            style={{
+              background: "var(--surface-light)",
+              color: "var(--foreground)",
+              border: "1px solid var(--border-light)",
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && otherValue.trim()) {
+                onSelect(otherValue.trim());
+              }
+            }}
+          />
+          <button
+            onClick={() => otherValue.trim() && onSelect(otherValue.trim())}
+            className="px-3 py-2 rounded-xl text-[12px] font-medium"
+            style={{ background: "var(--accent)", color: "#fff" }}
+          >
+            Enviar
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface ChatProps {
   initialMessages?: Message[];
   readOnly?: boolean;
@@ -378,11 +496,35 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
                       >
                         {msg.role === "assistant" ? "Prisciane.AI" : "Você"}
                       </p>
-                      <div
-                        className="text-[13px] leading-[1.7] whitespace-pre-wrap"
-                        style={{ color: "var(--foreground)" }}
-                      >
-                        {msg.content}
+                      <div className="text-[13px] leading-[1.7]" style={{ color: "var(--foreground)" }}>
+                        {msg.role === "assistant" ? (
+                          (() => {
+                            const { parts } = parseOptionsBlocks(msg.content);
+                            return parts.map((part, pi) =>
+                              typeof part === "string" ? (
+                                <span key={pi} className="whitespace-pre-wrap">{part}</span>
+                              ) : (
+                                <OptionButtons
+                                  key={pi}
+                                  pergunta={part.pergunta}
+                                  opcoes={part.opcoes}
+                                  onSelect={(val) => {
+                                    if (!readOnly) {
+                                      setInput(val);
+                                      setTimeout(() => {
+                                        const form = document.querySelector("form");
+                                        if (form) form.requestSubmit();
+                                      }, 100);
+                                    }
+                                  }}
+                                  disabled={readOnly || i < messages.length - 1}
+                                />
+                              )
+                            );
+                          })()
+                        ) : (
+                          <span className="whitespace-pre-wrap">{msg.content}</span>
+                        )}
                       </div>
                     </div>
                   </div>
