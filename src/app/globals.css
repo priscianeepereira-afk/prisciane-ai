@@ -216,6 +216,30 @@ body {
   background-clip: text;
 }
 
+/* Watermark background */
+.watermark-bg {
+  position: relative;
+}
+
+.watermark-bg::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 80%;
+  background-image: url('/prisciane-avatar.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  opacity: 0.03;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  filter: grayscale(100%);
+}
+
 /* Divider */
 .divider-gold {
   height: 1px;
