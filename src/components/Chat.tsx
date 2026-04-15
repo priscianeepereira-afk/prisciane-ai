@@ -105,15 +105,17 @@ async function loadImageAsBase64(url: string): Promise<string> {
 function addWatermark(doc: jsPDF, imgData: string) {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  const wmSize = 90;
-  const x = (pageWidth - wmSize) / 2;
-  const y = (pageHeight - wmSize) / 2;
+  // Imagem grande, ocupando quase a página toda
+  const wmWidth = pageWidth * 0.75;
+  const wmHeight = wmWidth * 1.2; // proporção vertical da foto
+  const x = (pageWidth - wmWidth) / 2;
+  const y = (pageHeight - wmHeight) / 2;
 
   // @ts-expect-error - jsPDF GState
-  const gState = new doc.GState({ opacity: 0.04 });
+  const gState = new doc.GState({ opacity: 0.035 });
   doc.saveGraphicsState();
   doc.setGState(gState);
-  doc.addImage(imgData, "JPEG", x, y, wmSize, wmSize);
+  doc.addImage(imgData, "PNG", x, y, wmWidth, wmHeight);
   doc.restoreGraphicsState();
 }
 
@@ -126,14 +128,14 @@ async function generatePDF(messages: Message[]): Promise<void> {
   const maxWidth = pageWidth - margin * 2;
   let y = 25;
 
-  // Load avatar image
-  let imgData = "";
+  // Load images
+  let imgSemFundo = "";
   try {
-    imgData = await loadImageAsBase64("/prisciane-avatar.jpg");
+    imgSemFundo = await loadImageAsBase64("/prisciane-semfundo.png");
   } catch {}
 
   // Watermark on first page
-  if (imgData) addWatermark(doc, imgData);
+  if (imgSemFundo) addWatermark(doc, imgSemFundo);
 
   // Header
   doc.setFontSize(18);
@@ -162,7 +164,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   lines.forEach((line: string) => {
     if (y > 265) {
       doc.addPage();
-      if (imgData) addWatermark(doc, imgData);
+      if (imgSemFundo) addWatermark(doc, imgSemFundo);
       y = 20;
     }
     doc.text(line, margin, y);
@@ -172,7 +174,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   // Signature section
   if (y > 230) {
     doc.addPage();
-    if (imgData) addWatermark(doc, imgData);
+    if (imgSemFundo) addWatermark(doc, imgSemFundo);
     y = 20;
   }
 
@@ -196,18 +198,23 @@ async function generatePDF(messages: Message[]): Promise<void> {
   doc.text(reminder, pageWidth / 2, y, { align: "center" });
   y += 12;
 
-  // Seal - circular avatar
-  if (imgData) {
-    const sealSize = 28;
+  // Seal - circular photo without background
+  if (imgSemFundo) {
+    const sealSize = 32;
     const sealX = (pageWidth - sealSize) / 2;
 
-    // Circle border (orange)
-    doc.setDrawColor(232, 98, 44);
-    doc.setLineWidth(0.8);
-    doc.circle(pageWidth / 2, y + sealSize / 2, sealSize / 2 + 1.5);
+    // Circle border (copper/bronze)
+    doc.setDrawColor(160, 98, 47);
+    doc.setLineWidth(1);
+    doc.circle(pageWidth / 2, y + sealSize / 2, sealSize / 2 + 2);
 
-    // Clip to circle using the image
-    doc.addImage(imgData, "JPEG", sealX, y, sealSize, sealSize);
+    // Inner circle (subtle)
+    doc.setDrawColor(200, 168, 76);
+    doc.setLineWidth(0.3);
+    doc.circle(pageWidth / 2, y + sealSize / 2, sealSize / 2 + 0.5);
+
+    // Photo inside circle
+    doc.addImage(imgSemFundo, "PNG", sealX, y, sealSize, sealSize);
 
     y += sealSize + 6;
   }
