@@ -105,9 +105,9 @@ async function loadImageAsBase64(url: string): Promise<string> {
 function addWatermark(doc: jsPDF, imgData: string) {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  // Imagem grande, ocupando quase a página toda
-  const wmWidth = pageWidth * 0.75;
-  const wmHeight = wmWidth * 1.2; // proporção vertical da foto
+  // Imagem grande, ocupando a página, proporção real 1080x1350
+  const wmWidth = pageWidth * 0.65;
+  const wmHeight = wmWidth * 1.25;
   const x = (pageWidth - wmWidth) / 2;
   const y = (pageHeight - wmHeight) / 2;
 
@@ -200,12 +200,14 @@ async function generatePDF(messages: Message[]): Promise<void> {
   doc.text(reminder, pageWidth / 2, y, { align: "center" });
   y += 12;
 
-  // Seal - circular image
+  // Seal - circular image (proporção real 1080x1350)
   if (imgCirculo) {
-    const sealSize = 35;
-    const sealX = (pageWidth - sealSize) / 2;
-    doc.addImage(imgCirculo, "PNG", sealX, y, sealSize, sealSize);
-    y += sealSize + 6;
+    const sealWidth = 28;
+    const sealHeight = sealWidth * 1.25;
+    const sealX = (pageWidth - sealWidth) / 2;
+    y += 2;
+    doc.addImage(imgCirculo, "PNG", sealX, y, sealWidth, sealHeight);
+    y += sealHeight + 4;
   }
 
   // Prisciane name under seal
