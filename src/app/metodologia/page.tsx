@@ -80,7 +80,7 @@ export default function Metodologia() {
             Metodologia
           </Link>
           <Link
-            href="#"
+            href="/sobre"
             className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] transition-colors hover:bg-[var(--surface-light)]"
             style={{ color: "var(--text-muted)" }}
           >
