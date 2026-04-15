@@ -130,8 +130,10 @@ async function generatePDF(messages: Message[]): Promise<void> {
 
   // Load images
   let imgSemFundo = "";
+  let imgCirculo = "";
   try {
     imgSemFundo = await loadImageAsBase64("/prisciane-semfundo.png");
+    imgCirculo = await loadImageAsBase64("/circulo.png");
   } catch {}
 
   // Watermark on first page
@@ -198,24 +200,11 @@ async function generatePDF(messages: Message[]): Promise<void> {
   doc.text(reminder, pageWidth / 2, y, { align: "center" });
   y += 12;
 
-  // Seal - circular photo without background
-  if (imgSemFundo) {
-    const sealSize = 32;
+  // Seal - circular image
+  if (imgCirculo) {
+    const sealSize = 35;
     const sealX = (pageWidth - sealSize) / 2;
-
-    // Circle border (copper/bronze)
-    doc.setDrawColor(160, 98, 47);
-    doc.setLineWidth(1);
-    doc.circle(pageWidth / 2, y + sealSize / 2, sealSize / 2 + 2);
-
-    // Inner circle (subtle)
-    doc.setDrawColor(200, 168, 76);
-    doc.setLineWidth(0.3);
-    doc.circle(pageWidth / 2, y + sealSize / 2, sealSize / 2 + 0.5);
-
-    // Photo inside circle
-    doc.addImage(imgSemFundo, "PNG", sealX, y, sealSize, sealSize);
-
+    doc.addImage(imgCirculo, "PNG", sealX, y, sealSize, sealSize);
     y += sealSize + 6;
   }
 
