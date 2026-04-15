@@ -1,11 +1,128 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { jsPDF } from "jspdf";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+}
+
+interface Conversation {
+  id: string;
+  timestamp: number;
+  messages: Message[];
+  preview: string;
+}
+
+const STORAGE_KEY = "prisciane-ai-history";
+const MAX_HISTORY = 20;
+
+function saveConversation(messages: Message[]) {
+  if (messages.length < 2) return;
+  try {
+    const history: Conversation[] = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
+    const firstUserMsg = messages.find((m) => m.role === "user");
+    const preview = firstUserMsg
+      ? firstUserMsg.content.slice(0, 60) + (firstUserMsg.content.length > 60 ? "..." : "")
+      : "Análise";
+    const id = Date.now().toString();
+    const existing = history.findIndex(
+      (c) => c.messages.length > 0 && c.messages[0].content === messages[0]?.content
+    );
+    if (existing >= 0) {
+      history[existing] = { id: history[existing].id, timestamp: Date.now(), messages, preview };
+    } else {
+      history.unshift({ id, timestamp: Date.now(), messages, preview });
+    }
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(history.slice(0, MAX_HISTORY))
+    );
+  } catch {}
+}
+
+export function getHistory(): Conversation[] {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function generateTXT(messages: Message[]): void {
+  const date = new Date().toLocaleDateString("pt-BR");
+  let text = `ANÁLISE V.I.R.A.L. — Prisciane.AI\nData: ${date}\n`;
+  text += "=".repeat(50) + "\n\n";
+  messages.forEach((msg) => {
+    const label = msg.role === "assistant" ? "PRISCIANE.AI" : "VOCÊ";
+    text += `${label}:\n${msg.content}\n\n${"—".repeat(30)}\n\n`;
+  });
+  text += "\nPowered by Metodologia V.I.R.A.L. da Prisciane";
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `analise-viral-${date.replace(/\//g, "-")}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function generatePDF(messages: Message[]): void {
+  const date = new Date().toLocaleDateString("pt-BR");
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const margin = 20;
+  const maxWidth = pageWidth - margin * 2;
+  let y = 25;
+
+  doc.setFontSize(18);
+  doc.setFont("helvetica", "bold");
+  doc.text("ANALISE V.I.R.A.L.", margin, y);
+  y += 8;
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(150);
+  doc.text(`Prisciane.AI  |  ${date}`, margin, y);
+  y += 5;
+  doc.setDrawColor(200, 150, 62);
+  doc.setLineWidth(0.5);
+  doc.line(margin, y, pageWidth - margin, y);
+  y += 12;
+  doc.setTextColor(0);
+
+  messages.forEach((msg) => {
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(msg.role === "assistant" ? 232 : 100, msg.role === "assistant" ? 98 : 100, msg.role === "assistant" ? 44 : 100);
+    doc.text(msg.role === "assistant" ? "PRISCIANE.AI" : "VOCE", margin, y);
+    y += 6;
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(30);
+    doc.setFontSize(10);
+    const lines = doc.splitTextToSize(msg.content, maxWidth);
+    lines.forEach((line: string) => {
+      if (y > 280) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(line, margin, y);
+      y += 5;
+    });
+    y += 8;
+  });
+
+  doc.setFontSize(8);
+  doc.setTextColor(150);
+  doc.text("Powered by Metodologia V.I.R.A.L. da Prisciane", margin, 288);
+  doc.save(`analise-viral-${date.replace(/\//g, "-")}.pdf`);
 }
 
 const QUICK_ACTIONS = [
@@ -58,8 +175,14 @@ const QUICK_ACTIONS = [
   },
 ];
 
-export default function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
+interface ChatProps {
+  initialMessages?: Message[];
+  readOnly?: boolean;
+  onConversationUpdate?: () => void;
+}
+
+export default function Chat({ initialMessages, readOnly, onConversationUpdate }: ChatProps) {
+  const [messages, setMessages] = useState<Message[]>(initialMessages || []);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -77,9 +200,14 @@ export default function Chat() {
     }
   }, [input]);
 
+  const saveAndNotify = useCallback((msgs: Message[]) => {
+    saveConversation(msgs);
+    onConversationUpdate?.();
+  }, [onConversationUpdate]);
+
   async function sendMessage(e: React.FormEvent) {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || isLoading || readOnly) return;
 
     const userMessage: Message = { role: "user", content: input.trim() };
     const newMessages = [...messages, userMessage];
@@ -97,28 +225,31 @@ export default function Chat() {
       const data = await res.json();
 
       if (data.error) {
-        setMessages([
+        const errMsgs = [
           ...newMessages,
           {
-            role: "assistant",
+            role: "assistant" as const,
             content: `Erro: ${data.error}. Verifique se a chave ANTHROPIC_API_KEY está configurada.`,
           },
-        ]);
+        ];
+        setMessages(errMsgs);
       } else {
-        setMessages([
+        const finalMsgs = [
           ...newMessages,
-          { role: "assistant", content: data.message },
-        ]);
+          { role: "assistant" as const, content: data.message },
+        ];
+        setMessages(finalMsgs);
+        saveAndNotify(finalMsgs);
       }
     } catch {
-      setMessages([
+      const errMsgs = [
         ...newMessages,
         {
-          role: "assistant",
-          content:
-            "Ops, algo deu errado na conexão. Tente novamente em alguns segundos.",
+          role: "assistant" as const,
+          content: "Ops, algo deu errado na conexão. Tente novamente em alguns segundos.",
         },
-      ]);
+      ];
+      setMessages(errMsgs);
     } finally {
       setIsLoading(false);
     }
@@ -127,6 +258,8 @@ export default function Chat() {
   function handleQuickAction(prompt: string) {
     setInput(prompt);
   }
+
+  const hasAssistantResponse = messages.some((m) => m.role === "assistant");
 
   return (
     <div className="flex flex-col h-full">
@@ -267,6 +400,37 @@ export default function Chat() {
                 </div>
               ))}
 
+              {/* Download buttons - after last assistant message */}
+              {hasAssistantResponse && !isLoading && (
+                <div className="flex items-center gap-3 px-4 pt-3 animate-fade-in">
+                  <button
+                    onClick={() => generatePDF(messages)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all hover:brightness-110"
+                    style={{ background: "var(--surface-light)", color: "var(--accent-light)", border: "1px solid var(--border)" }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    Baixar PDF
+                  </button>
+                  <button
+                    onClick={() => generateTXT(messages)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all hover:brightness-110"
+                    style={{ background: "var(--surface-light)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="7 10 12 15 17 10"/>
+                      <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Baixar TXT
+                  </button>
+                </div>
+              )}
+
               {/* Loading */}
               {isLoading && (
                 <div className="animate-fade-in">
@@ -301,40 +465,42 @@ export default function Chat() {
       </div>
 
       {/* Input Area */}
-      <div className="px-4 sm:px-8 py-4" style={{ background: "rgba(10, 8, 6, 0.9)", backdropFilter: "blur(12px)" }}>
-        <div className="shimmer-line mb-4 max-w-2xl mx-auto" />
-        <form onSubmit={sendMessage} className="max-w-2xl mx-auto">
-          <div className="flex items-end gap-2 rounded-2xl p-2 input-luxury" style={{ background: "var(--surface-raised)" }}>
-            <textarea
-              ref={textareaRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Descreva o conteúdo que quer analisar..."
-              rows={1}
-              disabled={isLoading}
-              className="flex-1 resize-none bg-transparent px-3 py-2 text-[13px] outline-none disabled:opacity-50"
-              style={{ color: "var(--foreground)" }}
-            />
-            <button
-              type="submit"
-              disabled={!input.trim() || isLoading}
-              className="p-2.5 rounded-xl transition-all duration-300 disabled:opacity-15 disabled:cursor-not-allowed hover:brightness-110 shrink-0"
-              style={{
-                background: input.trim() ? "var(--accent)" : "var(--surface-light)",
-                color: "#fff",
-              }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13" />
-                <polygon points="22 2 15 22 11 13 2 9 22 2" />
-              </svg>
-            </button>
-          </div>
-          <p className="text-center text-[10px] mt-2.5 tracking-widest uppercase" style={{ color: "var(--text-muted)" }}>
-            Metodologia V.I.R.A.L. da Prisciane
-          </p>
-        </form>
-      </div>
+      {!readOnly && (
+        <div className="px-4 sm:px-8 py-4" style={{ background: "rgba(10, 8, 6, 0.9)", backdropFilter: "blur(12px)" }}>
+          <div className="shimmer-line mb-4 max-w-2xl mx-auto" />
+          <form onSubmit={sendMessage} className="max-w-2xl mx-auto">
+            <div className="flex items-end gap-2 rounded-2xl p-2 input-luxury" style={{ background: "var(--surface-raised)" }}>
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Descreva o conteúdo que quer analisar..."
+                rows={1}
+                disabled={isLoading}
+                className="flex-1 resize-none bg-transparent px-3 py-2 text-[13px] outline-none disabled:opacity-50"
+                style={{ color: "var(--foreground)" }}
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || isLoading}
+                className="p-2.5 rounded-xl transition-all duration-300 disabled:opacity-15 disabled:cursor-not-allowed hover:brightness-110 shrink-0"
+                style={{
+                  background: input.trim() ? "var(--accent)" : "var(--surface-light)",
+                  color: "#fff",
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </div>
+            <p className="text-center text-[10px] mt-2.5 tracking-widest uppercase" style={{ color: "var(--text-muted)" }}>
+              Metodologia V.I.R.A.L. da Prisciane
+            </p>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
