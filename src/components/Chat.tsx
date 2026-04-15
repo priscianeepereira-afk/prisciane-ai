@@ -53,26 +53,48 @@ export function getHistory(): Conversation[] {
   }
 }
 
+function isAnalysisComplete(messages: Message[]): boolean {
+  const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
+  if (!lastAssistant) return false;
+  const text = lastAssistant.content.toUpperCase();
+  return (
+    (text.includes("BLOCOS DE PERSUAS") || text.includes("BLOCO DE PERSUAS")) &&
+    (text.includes("PONTOS FORTES") || text.includes("PONTO FORTE")) &&
+    text.includes("VIRALIZA")
+  );
+}
+
+function getAnalysisContent(messages: Message[]): { content: string; name: string } {
+  const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
+  const content = lastAssistant?.content || "";
+  const nameMatch = content.match(/NOME DO CRIATIVO:\s*(.+)/i);
+  const name = nameMatch ? nameMatch[1].trim() : "Análise de Criativo";
+  return { content, name };
+}
+
 function generateTXT(messages: Message[]): void {
   const date = new Date().toLocaleDateString("pt-BR");
-  let text = `ANÁLISE V.I.R.A.L. — Prisciane.AI\nData: ${date}\n`;
+  const { content, name } = getAnalysisContent(messages);
+  let text = `ANÁLISE V.I.R.A.L. — Prisciane.AI\n`;
+  text += `Criativo: ${name}\n`;
+  text += `Data: ${date}\n`;
   text += "=".repeat(50) + "\n\n";
-  messages.forEach((msg) => {
-    const label = msg.role === "assistant" ? "PRISCIANE.AI" : "VOCÊ";
-    text += `${label}:\n${msg.content}\n\n${"—".repeat(30)}\n\n`;
-  });
+  text += content;
+  text += "\n\n" + "=".repeat(50);
   text += "\nPowered by Metodologia V.I.R.A.L. da Prisciane";
   const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `analise-viral-${date.replace(/\//g, "-")}.txt`;
+  const slug = name.slice(0, 30).replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
+  a.download = `analise-${slug}-${date.replace(/\//g, "-")}.txt`;
   a.click();
   URL.revokeObjectURL(url);
 }
 
 function generatePDF(messages: Message[]): void {
   const date = new Date().toLocaleDateString("pt-BR");
+  const { content, name } = getAnalysisContent(messages);
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 20;
@@ -83,46 +105,38 @@ function generatePDF(messages: Message[]): void {
   doc.setFont("helvetica", "bold");
   doc.text("ANALISE V.I.R.A.L.", margin, y);
   y += 8;
-  doc.setFontSize(10);
+  doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
+  doc.setTextColor(232, 98, 44);
+  doc.text(name, margin, y);
+  y += 7;
+  doc.setFontSize(10);
   doc.setTextColor(150);
   doc.text(`Prisciane.AI  |  ${date}`, margin, y);
   y += 5;
-  doc.setDrawColor(200, 150, 62);
+  doc.setDrawColor(232, 98, 44);
   doc.setLineWidth(0.5);
   doc.line(margin, y, pageWidth - margin, y);
   y += 12;
-  doc.setTextColor(0);
 
-  messages.forEach((msg) => {
-    if (y > 270) {
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(30);
+  doc.setFontSize(10);
+  const lines = doc.splitTextToSize(content, maxWidth);
+  lines.forEach((line: string) => {
+    if (y > 280) {
       doc.addPage();
       y = 20;
     }
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(msg.role === "assistant" ? 232 : 100, msg.role === "assistant" ? 98 : 100, msg.role === "assistant" ? 44 : 100);
-    doc.text(msg.role === "assistant" ? "PRISCIANE.AI" : "VOCE", margin, y);
-    y += 6;
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(30);
-    doc.setFontSize(10);
-    const lines = doc.splitTextToSize(msg.content, maxWidth);
-    lines.forEach((line: string) => {
-      if (y > 280) {
-        doc.addPage();
-        y = 20;
-      }
-      doc.text(line, margin, y);
-      y += 5;
-    });
-    y += 8;
+    doc.text(line, margin, y);
+    y += 5;
   });
 
   doc.setFontSize(8);
   doc.setTextColor(150);
   doc.text("Powered by Metodologia V.I.R.A.L. da Prisciane", margin, 288);
-  doc.save(`analise-viral-${date.replace(/\//g, "-")}.pdf`);
+  const slug = name.slice(0, 30).replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
+  doc.save(`analise-${slug}-${date.replace(/\//g, "-")}.pdf`);
 }
 
 const QUICK_ACTIONS = [
@@ -259,7 +273,7 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
     setInput(prompt);
   }
 
-  const hasAssistantResponse = messages.some((m) => m.role === "assistant");
+  const analysisReady = isAnalysisComplete(messages);
 
   return (
     <div className="flex flex-col h-full">
@@ -380,8 +394,8 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
                 </div>
               ))}
 
-              {/* Download buttons - after last assistant message */}
-              {hasAssistantResponse && !isLoading && (
+              {/* Download buttons - only after full analysis */}
+              {analysisReady && !isLoading && (
                 <div className="flex items-center gap-3 px-4 pt-3 animate-fade-in">
                   <button
                     onClick={() => generatePDF(messages)}
