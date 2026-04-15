@@ -6,11 +6,11 @@ const PILARES = [
     letra: "V",
     nome: "Vantagem",
     subtitulo: "O Formato",
-    desc: "Identificar qual formato estrategico (Dialogo, 1x1, Lifestyle) da a maior vantagem competitiva para aquele argumento.",
+    desc: "Identificar qual formato estratégico (Diálogo, 1x1, Lifestyle) dá a maior vantagem competitiva para aquele argumento.",
   },
   {
     letra: "I",
-    nome: "Intencao",
+    nome: "Intenção",
     subtitulo: "Estrutura Validada",
     desc: 'Extrair o que funcionou (o "ouro" que o usuario achou que foi sorte) e aplicar uma estrutura de copy real e validada.',
   },
@@ -22,15 +22,15 @@ const PILARES = [
   },
   {
     letra: "A",
-    nome: "Acao",
-    subtitulo: "Dados Proprios",
-    desc: "Focar no aprendizado com a propria operacao e parar de olhar para os concorrentes.",
+    nome: "Ação",
+    subtitulo: "Dados Próprios",
+    desc: "Focar no aprendizado com a própria operação e parar de olhar para os concorrentes.",
   },
   {
     letra: "L",
     nome: "Lateralizacao",
     subtitulo: "O Coracao",
-    desc: "Isolar o CORPO (argumento/DNA) validado para que o profissional possa replica-lo em novos formatos.",
+    desc: "Isolar o CORPO (argumento/DNA) validado para que o profissional possa replicá-lo em novos formatos.",
   },
 ];
 
@@ -67,7 +67,7 @@ export default function Metodologia() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
             </svg>
-            Analise V.I.R.A.L.
+            Análise V.I.R.A.L.
           </Link>
           <Link
             href="/metodologia"
@@ -115,19 +115,19 @@ export default function Metodologia() {
         <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-8">
           <div className="max-w-2xl mx-auto animate-fade-in">
             {/* Title */}
-            <div className="gradient-hero rounded-3xl p-8 sm:p-10 mb-10">
+            <div className="mb-10">
               <p
                 className="text-[11px] font-medium mb-3 tracking-[0.25em] uppercase"
                 style={{ color: "var(--accent)" }}
               >
-                Analise de DNA de Copy
+                Análise de DNA de Copy
               </p>
               <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4 heading-serif" style={{ color: "var(--foreground)" }}>
                 Metodologia{" "}
                 <span className="text-gold italic">V.I.R.A.L.</span>
               </h2>
               <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                O agente analisa todo conteudo (Reels, Anuncio, Live, Bonus) atraves dos 5 pilares oficiais da Prisciane.
+                O agente analisa todo conteúdo (Reels, Anúncio, Live, Bônus) através dos 5 pilares oficiais da Prisciane.
               </p>
             </div>
 
@@ -181,7 +181,7 @@ export default function Metodologia() {
                 Regra de Ouro
               </p>
               <p className="text-[13px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                O agente e um ANALISTA. Ele isola o DNA, mas NUNCA sugere o formato final. A inteligencia de transposicao pertence ao usuario atraves do Algoritmo de Espionagem Fantasma.
+                O agente e um ANALISTA. Ele isola o DNA, mas NUNCA sugere o formato final. A inteligência de transposição pertence ao usuário através do Algoritmo de Espionagem Fantasma.
               </p>
             </div>
 
@@ -195,7 +195,7 @@ export default function Metodologia() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
-                Iniciar Analise
+                Iniciar Análise
               </Link>
             </div>
           </div>

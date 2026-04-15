@@ -29,8 +29,8 @@ const QUICK_ACTIONS = [
       </svg>
     ),
     title: "Analisar Criativo",
-    desc: "Extrair o que converte no anuncio",
-    prompt: "Tenho um anuncio que converteu bem",
+    desc: "Extrair o que converte no anúncio",
+    prompt: "Tenho um anúncio que converteu bem",
   },
   {
     icon: (
@@ -53,7 +53,7 @@ const QUICK_ACTIONS = [
       </svg>
     ),
     title: "Isolar Copy",
-    desc: "Separar os blocos de persuasao",
+    desc: "Separar os blocos de persuasão",
     prompt: "Quero isolar o que funcionou na minha copy",
   },
 ];
@@ -101,7 +101,7 @@ export default function Chat() {
           ...newMessages,
           {
             role: "assistant",
-            content: `Erro: ${data.error}. Verifique se a chave ANTHROPIC_API_KEY esta configurada.`,
+            content: `Erro: ${data.error}. Verifique se a chave ANTHROPIC_API_KEY está configurada.`,
           },
         ]);
       } else {
@@ -116,7 +116,7 @@ export default function Chat() {
         {
           role: "assistant",
           content:
-            "Ops, algo deu errado na conexao. Tente novamente em alguns segundos.",
+            "Ops, algo deu errado na conexão. Tente novamente em alguns segundos.",
         },
       ]);
     } finally {
@@ -144,7 +144,7 @@ export default function Chat() {
             <div className="animate-fade-in particles">
               {/* Hero */}
               <div className="pt-10 sm:pt-20 pb-12 text-center">
-                <div className="gradient-hero rounded-3xl p-8 sm:p-12 mb-10">
+                <div className="mb-10">
                   <p
                     className="text-[11px] font-medium mb-4 tracking-[0.25em] uppercase"
                     style={{ color: "var(--accent)" }}
@@ -163,7 +163,7 @@ export default function Chat() {
                     className="text-sm leading-relaxed max-w-md mx-auto"
                     style={{ color: "var(--text-secondary)" }}
                   >
-                    Envie seu conteudo para extrairmos os pontos fortes dele e produzir Criativos Virais capazes de triplicar seu ROAS
+                    Envie seu conteúdo para extrairmos os pontos fortes dele e produzir Criativos Virais capazes de triplicar seu ROAS
                   </p>
                 </div>
 
@@ -256,7 +256,7 @@ export default function Chat() {
                           color: msg.role === "assistant" ? "var(--accent)" : "var(--text-muted)",
                         }}
                       >
-                        {msg.role === "assistant" ? "Prisciane.AI" : "Voce"}
+                        {msg.role === "assistant" ? "Prisciane.AI" : "Você"}
                       </p>
                       <div
                         className="text-[13px] leading-[1.7] whitespace-pre-wrap"
@@ -317,7 +317,7 @@ export default function Chat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Descreva o conteudo que quer analisar..."
+              placeholder="Descreva o conteúdo que quer analisar..."
               rows={1}
               disabled={isLoading}
               className="flex-1 resize-none bg-transparent px-3 py-2 text-[13px] outline-none disabled:opacity-50"

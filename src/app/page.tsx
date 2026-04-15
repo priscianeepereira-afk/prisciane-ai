@@ -36,7 +36,7 @@ export default function Home() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
             </svg>
-            Analise V.I.R.A.L.
+            Análise V.I.R.A.L.
           </Link>
           <Link
             href="/metodologia"
@@ -81,7 +81,7 @@ export default function Home() {
             <div className="flex items-center gap-2 text-[13px]">
               <span style={{ color: "var(--text-muted)" }}>Prisciane.AI</span>
               <span style={{ color: "var(--border-light)" }}>/</span>
-              <span className="font-medium" style={{ color: "var(--accent-light)" }}>Analise V.I.R.A.L.</span>
+              <span className="font-medium" style={{ color: "var(--accent-light)" }}>Análise V.I.R.A.L.</span>
             </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full" style={{ background: "var(--surface-light)", border: "1px solid var(--border)" }}>
