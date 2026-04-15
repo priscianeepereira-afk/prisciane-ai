@@ -92,7 +92,32 @@ function generateTXT(messages: Message[]): void {
   URL.revokeObjectURL(url);
 }
 
-function generatePDF(messages: Message[]): void {
+async function loadImageAsBase64(url: string): Promise<string> {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.readAsDataURL(blob);
+  });
+}
+
+function addWatermark(doc: jsPDF, imgData: string) {
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const wmSize = 90;
+  const x = (pageWidth - wmSize) / 2;
+  const y = (pageHeight - wmSize) / 2;
+
+  // @ts-expect-error - jsPDF GState
+  const gState = new doc.GState({ opacity: 0.04 });
+  doc.saveGraphicsState();
+  doc.setGState(gState);
+  doc.addImage(imgData, "JPEG", x, y, wmSize, wmSize);
+  doc.restoreGraphicsState();
+}
+
+async function generatePDF(messages: Message[]): Promise<void> {
   const date = new Date().toLocaleDateString("pt-BR");
   const { content, name } = getAnalysisContent(messages);
   const doc = new jsPDF();
@@ -101,6 +126,16 @@ function generatePDF(messages: Message[]): void {
   const maxWidth = pageWidth - margin * 2;
   let y = 25;
 
+  // Load avatar image
+  let imgData = "";
+  try {
+    imgData = await loadImageAsBase64("/prisciane-avatar.jpg");
+  } catch {}
+
+  // Watermark on first page
+  if (imgData) addWatermark(doc, imgData);
+
+  // Header
   doc.setFontSize(18);
   doc.setFont("helvetica", "bold");
   doc.text("ANALISE V.I.R.A.L.", margin, y);
@@ -119,22 +154,79 @@ function generatePDF(messages: Message[]): void {
   doc.line(margin, y, pageWidth - margin, y);
   y += 12;
 
+  // Content
   doc.setFont("helvetica", "normal");
   doc.setTextColor(30);
   doc.setFontSize(10);
   const lines = doc.splitTextToSize(content, maxWidth);
   lines.forEach((line: string) => {
-    if (y > 280) {
+    if (y > 265) {
       doc.addPage();
+      if (imgData) addWatermark(doc, imgData);
       y = 20;
     }
     doc.text(line, margin, y);
     y += 5;
   });
 
+  // Signature section
+  if (y > 230) {
+    doc.addPage();
+    if (imgData) addWatermark(doc, imgData);
+    y = 20;
+  }
+
+  y += 15;
+  doc.setDrawColor(232, 98, 44);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y, pageWidth - margin, y);
+  y += 12;
+
+  // "mas lembre-se:"
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "italic");
+  doc.setTextColor(232, 98, 44);
+  doc.text("mas lembre-se:", pageWidth / 2, y, { align: "center" });
+  y += 8;
+
   doc.setFontSize(8);
-  doc.setTextColor(150);
-  doc.text("Powered by Metodologia V.I.R.A.L. da Prisciane", margin, 288);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(120);
+  const reminder = "O agente entrega o DNA mastigado. A inteligencia de transposicao e sua.";
+  doc.text(reminder, pageWidth / 2, y, { align: "center" });
+  y += 12;
+
+  // Seal - circular avatar
+  if (imgData) {
+    const sealSize = 28;
+    const sealX = (pageWidth - sealSize) / 2;
+
+    // Circle border (orange)
+    doc.setDrawColor(232, 98, 44);
+    doc.setLineWidth(0.8);
+    doc.circle(pageWidth / 2, y + sealSize / 2, sealSize / 2 + 1.5);
+
+    // Clip to circle using the image
+    doc.addImage(imgData, "JPEG", sealX, y, sealSize, sealSize);
+
+    y += sealSize + 6;
+  }
+
+  // Prisciane name under seal
+  doc.setFontSize(7);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(180);
+  doc.text("PRISCIANE", pageWidth / 2, y, { align: "center" });
+  y += 3;
+  doc.setFontSize(6);
+  doc.setFont("helvetica", "normal");
+  doc.text("Metodologia V.I.R.A.L.", pageWidth / 2, y, { align: "center" });
+
+  // Footer on last page
+  doc.setFontSize(7);
+  doc.setTextColor(180);
+  doc.text("Powered by Prisciane.AI", pageWidth / 2, 292, { align: "center" });
+
   const slug = name.slice(0, 30).replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
   doc.save(`analise-${slug}-${date.replace(/\//g, "-")}.pdf`);
 }
