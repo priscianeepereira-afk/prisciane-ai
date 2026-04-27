@@ -9,47 +9,22 @@ interface Message {
   content: string;
 }
 
-interface Conversation {
-  id: string;
-  timestamp: number;
-  messages: Message[];
-  preview: string;
-}
-
-const STORAGE_KEY = "prisciane-ai-history";
-const MAX_HISTORY = 20;
-
-function saveConversation(messages: Message[]) {
-  if (messages.length < 2) return;
+async function persistConversation(
+  messages: Message[],
+  conversationId: string | null
+): Promise<string | null> {
+  if (messages.length < 2) return conversationId;
   try {
-    const history: Conversation[] = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    );
-    const firstUserMsg = messages.find((m) => m.role === "user");
-    const preview = firstUserMsg
-      ? firstUserMsg.content.slice(0, 60) + (firstUserMsg.content.length > 60 ? "..." : "")
-      : "Análise";
-    const id = Date.now().toString();
-    const existing = history.findIndex(
-      (c) => c.messages.length > 0 && c.messages[0].content === messages[0]?.content
-    );
-    if (existing >= 0) {
-      history[existing] = { id: history[existing].id, timestamp: Date.now(), messages, preview };
-    } else {
-      history.unshift({ id, timestamp: Date.now(), messages, preview });
-    }
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(history.slice(0, MAX_HISTORY))
-    );
-  } catch {}
-}
-
-export function getHistory(): Conversation[] {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const res = await fetch("/api/conversations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages, id: conversationId || undefined }),
+    });
+    if (!res.ok) return conversationId;
+    const data = await res.json();
+    return data.conversation?.id || conversationId;
   } catch {
-    return [];
+    return conversationId;
   }
 }
 
@@ -399,12 +374,14 @@ function OptionButtons({
 
 interface ChatProps {
   initialMessages?: Message[];
+  initialConversationId?: string | null;
   readOnly?: boolean;
   onConversationUpdate?: () => void;
 }
 
-export default function Chat({ initialMessages, readOnly, onConversationUpdate }: ChatProps) {
+export default function Chat({ initialMessages, initialConversationId, readOnly, onConversationUpdate }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages || []);
+  const [conversationId, setConversationId] = useState<string | null>(initialConversationId ?? null);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -422,10 +399,16 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
     }
   }, [input]);
 
-  const saveAndNotify = useCallback((msgs: Message[]) => {
-    saveConversation(msgs);
-    onConversationUpdate?.();
-  }, [onConversationUpdate]);
+  const saveAndNotify = useCallback(
+    async (msgs: Message[]) => {
+      const newId = await persistConversation(msgs, conversationId);
+      if (newId && newId !== conversationId) {
+        setConversationId(newId);
+      }
+      onConversationUpdate?.();
+    },
+    [conversationId, onConversationUpdate]
+  );
 
   async function sendMessage(e: React.FormEvent) {
     e.preventDefault();
@@ -461,7 +444,7 @@ export default function Chat({ initialMessages, readOnly, onConversationUpdate }
           { role: "assistant" as const, content: data.message },
         ];
         setMessages(finalMsgs);
-        saveAndNotify(finalMsgs);
+        void saveAndNotify(finalMsgs);
       }
     } catch {
       const errMsgs = [
