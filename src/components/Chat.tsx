@@ -639,12 +639,6 @@ export default function Chat({ initialMessages, initialConversationId, readOnly,
                       Baixar TXT
                     </button>
                   </div>
-                  <div className="px-4 pt-4 pb-2">
-                    <div className="divider-gold mb-4" />
-                    <p className="text-center text-[11px] italic" style={{ color: "var(--text-muted)" }}>
-                      Análise concluída. Baixe seu diagnóstico e inicie uma nova análise quando quiser.
-                    </p>
-                  </div>
                 </>
               )}
 
@@ -682,7 +676,7 @@ export default function Chat({ initialMessages, initialConversationId, readOnly,
       </div>
 
       {/* Input Area */}
-      {!readOnly && !analysisReady && (
+      {!readOnly && (
         <div className="px-4 sm:px-8 py-4" style={{ background: "rgba(10, 8, 6, 0.9)", backdropFilter: "blur(12px)" }}>
           <div className="shimmer-line mb-4 max-w-2xl mx-auto" />
           <form onSubmit={sendMessage} className="max-w-2xl mx-auto">
