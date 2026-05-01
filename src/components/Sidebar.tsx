@@ -32,6 +32,29 @@ interface UserProfile {
   role: string;
 }
 
+const PROFILE_CACHE_KEY = "prisciane-profile-cache";
+const HISTORY_CACHE_KEY = "prisciane-history-cache";
+
+function readCachedProfile(): UserProfile | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(PROFILE_CACHE_KEY);
+    return raw ? (JSON.parse(raw) as UserProfile) : null;
+  } catch {
+    return null;
+  }
+}
+
+function readCachedHistory(): Conversation[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = sessionStorage.getItem(HISTORY_CACHE_KEY);
+    return raw ? (JSON.parse(raw) as Conversation[]) : [];
+  } catch {
+    return [];
+  }
+}
+
 export default function Sidebar({
   activePage,
   onLoadConvo,
@@ -39,8 +62,8 @@ export default function Sidebar({
   activeConvoId,
   refreshKey,
 }: SidebarProps) {
-  const [history, setHistory] = useState<Conversation[]>([]);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [history, setHistory] = useState<Conversation[]>(() => readCachedHistory());
+  const [profile, setProfile] = useState<UserProfile | null>(() => readCachedProfile());
 
   useEffect(() => {
     async function load() {
@@ -51,11 +74,20 @@ export default function Sidebar({
         ]);
         if (profRes.ok) {
           const data = await profRes.json();
-          if (data.profile) setProfile(data.profile);
+          if (data.profile) {
+            setProfile(data.profile);
+            try {
+              sessionStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(data.profile));
+            } catch {}
+          }
         }
         if (convosRes.ok) {
           const data = await convosRes.json();
-          setHistory(data.conversations || []);
+          const convos = data.conversations || [];
+          setHistory(convos);
+          try {
+            sessionStorage.setItem(HISTORY_CACHE_KEY, JSON.stringify(convos));
+          } catch {}
         }
       } catch {}
     }
@@ -221,13 +253,19 @@ export default function Sidebar({
             <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
             <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>Online</span>
           </div>
-          <a
-            href="/logout"
+          <button
+            onClick={() => {
+              try {
+                sessionStorage.removeItem(PROFILE_CACHE_KEY);
+                sessionStorage.removeItem(HISTORY_CACHE_KEY);
+              } catch {}
+              window.location.href = "/logout";
+            }}
             className="text-[11px] hover:underline"
             style={{ color: "var(--text-muted)" }}
           >
             Sair
-          </a>
+          </button>
         </div>
       </div>
     </aside>
