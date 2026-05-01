@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 
 interface Message {
   role: "user" | "assistant";
@@ -44,25 +43,18 @@ export default function Sidebar({
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
-    const supabase = createClient();
-
     async function load() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("full_name, email, role")
-        .eq("id", user.id)
-        .single();
-      if (prof) setProfile(prof);
-
       try {
-        const res = await fetch("/api/conversations");
-        if (res.ok) {
-          const data = await res.json();
+        const [profRes, convosRes] = await Promise.all([
+          fetch("/api/profile"),
+          fetch("/api/conversations"),
+        ]);
+        if (profRes.ok) {
+          const data = await profRes.json();
+          if (data.profile) setProfile(data.profile);
+        }
+        if (convosRes.ok) {
+          const data = await convosRes.json();
           setHistory(data.conversations || []);
         }
       } catch {}
