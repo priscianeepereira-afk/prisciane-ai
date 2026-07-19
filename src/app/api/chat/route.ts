@@ -128,8 +128,12 @@ export async function POST(req: NextRequest) {
       messages: messages,
     });
 
-    const content = response.content[0];
-    const text = content.type === "text" ? content.text : "";
+    // Sonnet 5 pode emitir blocos de "thinking" antes do texto —
+    // concatena todos os blocos de texto em vez de assumir content[0].
+    const text = response.content
+      .filter((c) => c.type === "text")
+      .map((c) => (c as { type: "text"; text: string }).text)
+      .join("\n");
 
     return Response.json({ message: text });
   } catch (error: unknown) {
