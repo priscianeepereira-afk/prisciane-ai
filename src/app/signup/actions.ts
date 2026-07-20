@@ -33,5 +33,6 @@ export async function signup(formData: FormData) {
   // Confirmação de e-mail desabilitada — login automático
   await supabase.auth.signInWithPassword({ email, password });
 
-  redirect("/");
+  // Primeiro acesso: quiz de boas-vindas antes de liberar a plataforma
+  redirect("/qualificar");
 }
