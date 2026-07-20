@@ -132,7 +132,7 @@ export default function QualificarPage() {
               className="text-center text-[12px] mt-5"
               style={{ color: "var(--text-muted)" }}
             >
-              Salvando...
+              Aguarde, você será redirecionado...
             </p>
           )}
 
