@@ -49,7 +49,7 @@ export default function HomeClient() {
       <main className="flex-1 flex flex-col min-w-0 gradient-warm watermark-bg">
         <header
           className="flex items-center justify-between px-6 py-3 border-b shrink-0"
-          style={{ borderColor: "var(--border)", background: "rgba(10, 8, 6, 0.8)", backdropFilter: "blur(12px)" }}
+          style={{ borderColor: "var(--border)", background: "rgba(13, 3, 11, 0.8)", backdropFilter: "blur(12px)" }}
         >
           <div className="flex items-center gap-3">
             <div className="md:hidden w-8 h-8 rounded-lg overflow-hidden shrink-0">
@@ -83,7 +83,7 @@ export default function HomeClient() {
               className="flex items-center gap-2 px-3 py-1 rounded-full"
               style={{ background: "var(--surface-light)", border: "1px solid var(--border)" }}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--money-green)" }} />
               <span className="text-[11px]" style={{ color: "var(--text-secondary)" }}>Online</span>
             </div>
           </div>

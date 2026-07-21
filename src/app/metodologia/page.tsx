@@ -45,7 +45,7 @@ export default function Metodologia() {
       <main className="flex-1 flex flex-col min-w-0 gradient-warm watermark-bg">
         <header
           className="flex items-center justify-between px-6 py-3 border-b shrink-0"
-          style={{ borderColor: "var(--border)", background: "rgba(10, 8, 6, 0.8)", backdropFilter: "blur(12px)" }}
+          style={{ borderColor: "var(--border)", background: "rgba(13, 3, 11, 0.8)", backdropFilter: "blur(12px)" }}
         >
           <div className="flex items-center gap-2 text-[13px]">
             <Link href="/" className="hover:underline" style={{ color: "var(--text-muted)" }}>Prisciane.AI</Link>
@@ -63,7 +63,7 @@ export default function Metodologia() {
               </p>
               <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4 heading-serif" style={{ color: "var(--foreground)" }}>
                 Metodologia{" "}
-                <span className="text-gold italic">V.I.R.A.L.</span>
+                <span className="text-peach italic">V.I.R.A.L.</span>
               </h2>
               <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                 O agente analisa todo conteúdo (Reels, Anúncio, Live, Bônus) através dos 5 pilares oficiais da Prisciane.
@@ -80,7 +80,7 @@ export default function Metodologia() {
                   <div className="flex items-start gap-4">
                     <div
                       className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 text-lg font-bold heading-serif"
-                      style={{ background: "linear-gradient(145deg, #B2511B, #5C2700)", color: "#fff" }}
+                      style={{ background: "linear-gradient(145deg, var(--accent), var(--accent-dark))", color: "#fff" }}
                     >
                       {pilar.letra}
                     </div>
@@ -108,7 +108,7 @@ export default function Metodologia() {
               style={{
                 background: "var(--surface-raised)",
                 borderColor: "var(--accent)",
-                boxShadow: "0 0 30px rgba(178, 81, 27, 0.05)",
+                boxShadow: "0 0 30px rgba(224, 141, 75, 0.05)",
               }}
             >
               <p className="text-[11px] font-medium mb-2 tracking-[0.2em] uppercase" style={{ color: "var(--accent)" }}>

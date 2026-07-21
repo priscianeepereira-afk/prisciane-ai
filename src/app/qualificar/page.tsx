@@ -70,9 +70,9 @@ export default function QualificarPage() {
           </div>
           <h1
             className="text-2xl font-semibold heading-serif mb-1"
-            style={{ color: "var(--accent-light)" }}
+            style={{ color: "var(--foreground)" }}
           >
-            Antes de começar
+            Antes de <span className="text-peach italic">começar</span>
           </h1>
           <p
             className="text-[11px] tracking-[0.25em] uppercase"
@@ -140,7 +140,7 @@ export default function QualificarPage() {
             <div
               className="mt-5 p-3 rounded-lg text-[12px] text-center"
               style={{
-                background: "rgba(178, 81, 27, 0.1)",
+                background: "rgba(224, 141, 75, 0.1)",
                 color: "var(--accent-light)",
                 border: "1px solid var(--accent)",
               }}

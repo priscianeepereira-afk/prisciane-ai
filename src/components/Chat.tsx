@@ -122,14 +122,14 @@ async function generatePDF(messages: Message[]): Promise<void> {
   y += 8;
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
-  doc.setTextColor(178, 81, 27);
+  doc.setTextColor(224, 141, 75);
   doc.text(name, margin, y);
   y += 7;
   doc.setFontSize(10);
   doc.setTextColor(150);
   doc.text(`Prisciane.AI  |  ${date}`, margin, y);
   y += 5;
-  doc.setDrawColor(178, 81, 27);
+  doc.setDrawColor(224, 141, 75);
   doc.setLineWidth(0.5);
   doc.line(margin, y, pageWidth - margin, y);
   y += 12;
@@ -157,7 +157,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   }
 
   y += 15;
-  doc.setDrawColor(178, 81, 27);
+  doc.setDrawColor(228, 166, 82);
   doc.setLineWidth(0.3);
   doc.line(margin, y, pageWidth - margin, y);
   y += 12;
@@ -165,7 +165,7 @@ async function generatePDF(messages: Message[]): Promise<void> {
   // "mas lembre-se:"
   doc.setFontSize(11);
   doc.setFont("helvetica", "italic");
-  doc.setTextColor(178, 81, 27);
+  doc.setTextColor(224, 141, 75);
   doc.text("mas lembre-se:", pageWidth / 2, y, { align: "center" });
   y += 8;
 
@@ -487,7 +487,7 @@ export default function Chat({ initialMessages, initialConversationId, readOnly,
                     style={{ color: "var(--foreground)" }}
                   >
                     O que vamos{" "}
-                    <span className="text-gold italic">analisar</span>{" "}
+                    <span className="text-peach italic">analisar</span>{" "}
                     hoje?
                   </h2>
                   <p
@@ -542,7 +542,7 @@ export default function Chat({ initialMessages, initialConversationId, readOnly,
                   <div
                     className="flex gap-3.5 py-5 px-4 rounded-2xl transition-colors"
                     style={{
-                      background: msg.role === "assistant" ? "rgba(20, 18, 16, 0.6)" : "transparent",
+                      background: msg.role === "assistant" ? "var(--surface)" : "transparent",
                     }}
                   >
                     {/* Avatar */}
@@ -645,7 +645,7 @@ export default function Chat({ initialMessages, initialConversationId, readOnly,
               {/* Loading */}
               {isLoading && (
                 <div className="animate-fade-in">
-                  <div className="flex gap-3.5 py-5 px-4 rounded-2xl" style={{ background: "rgba(20, 18, 16, 0.6)" }}>
+                  <div className="flex gap-3.5 py-5 px-4 rounded-2xl" style={{ background: "var(--surface)" }}>
                     <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0">
                       <Image src="/prisciane-avatar.jpg" alt="P" width={28} height={28} className="w-full h-full object-cover" />
                     </div>
@@ -677,7 +677,7 @@ export default function Chat({ initialMessages, initialConversationId, readOnly,
 
       {/* Input Area */}
       {!readOnly && (
-        <div className="px-4 sm:px-8 py-4" style={{ background: "rgba(10, 8, 6, 0.9)", backdropFilter: "blur(12px)" }}>
+        <div className="px-4 sm:px-8 py-4" style={{ background: "rgba(13, 3, 11, 0.9)", backdropFilter: "blur(12px)" }}>
           <div className="shimmer-line mb-4 max-w-2xl mx-auto" />
           <form onSubmit={sendMessage} className="max-w-2xl mx-auto">
             <div className="flex items-end gap-2 rounded-2xl p-2 input-luxury" style={{ background: "var(--surface-raised)" }}>

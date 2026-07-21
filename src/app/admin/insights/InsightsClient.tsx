@@ -98,7 +98,7 @@ export default function InsightsClient() {
                   style={{ color: "var(--foreground)" }}
                 >
                   Insights da{" "}
-                  <span className="text-gold italic">plataforma</span>
+                  <span className="text-peach italic">plataforma</span>
                 </h2>
                 <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
                   Faça perguntas sobre o comportamento dos usuários. A IA analisa todas as conversas e responde com base nos dados reais.
@@ -138,7 +138,7 @@ export default function InsightsClient() {
                   </div>
                   <div
                     className="p-5 rounded-2xl"
-                    style={{ background: "rgba(20, 18, 16, 0.6)" }}
+                    style={{ background: "rgba(21, 7, 16, 0.6)" }}
                   >
                     <p
                       className="text-[10px] tracking-[0.2em] uppercase mb-2"
@@ -157,7 +157,7 @@ export default function InsightsClient() {
                 </div>
               ))}
               {isLoading && (
-                <div className="animate-fade-in p-5 rounded-2xl" style={{ background: "rgba(20, 18, 16, 0.6)" }}>
+                <div className="animate-fade-in p-5 rounded-2xl" style={{ background: "rgba(21, 7, 16, 0.6)" }}>
                   <p className="text-[10px] tracking-[0.2em] uppercase mb-2" style={{ color: "var(--accent)" }}>
                     Análise
                   </p>
@@ -184,7 +184,7 @@ export default function InsightsClient() {
       <div
         className="px-4 sm:px-8 py-4"
         style={{
-          background: "rgba(10, 8, 6, 0.9)",
+          background: "rgba(13, 3, 11, 0.9)",
           backdropFilter: "blur(12px)",
         }}
       >

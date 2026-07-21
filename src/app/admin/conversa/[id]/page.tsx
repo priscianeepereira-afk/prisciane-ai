@@ -64,7 +64,7 @@ export default async function AdminConversaPage({
       <main className="flex-1 flex flex-col min-w-0 gradient-warm overflow-hidden">
         <header
           className="flex items-center justify-between px-6 py-3 border-b shrink-0"
-          style={{ borderColor: "var(--border)", background: "rgba(10, 8, 6, 0.8)", backdropFilter: "blur(12px)" }}
+          style={{ borderColor: "var(--border)", background: "rgba(13, 3, 11, 0.8)", backdropFilter: "blur(12px)" }}
         >
           <div className="flex items-center gap-2 text-[13px]">
             <Link href="/" className="hover:underline" style={{ color: "var(--text-muted)" }}>
@@ -122,7 +122,7 @@ export default async function AdminConversaPage({
                   <div
                     className="flex gap-3.5 py-5 px-4 rounded-2xl"
                     style={{
-                      background: msg.role === "assistant" ? "rgba(20, 18, 16, 0.6)" : "transparent",
+                      background: msg.role === "assistant" ? "rgba(21, 7, 16, 0.6)" : "transparent",
                     }}
                   >
                     <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0">

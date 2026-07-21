@@ -13,7 +13,7 @@ export default function Sobre() {
       <main className="flex-1 flex flex-col min-w-0 gradient-warm watermark-bg">
         <header
           className="flex items-center justify-between px-6 py-3 border-b shrink-0"
-          style={{ borderColor: "var(--border)", background: "rgba(10, 8, 6, 0.8)", backdropFilter: "blur(12px)" }}
+          style={{ borderColor: "var(--border)", background: "rgba(13, 3, 11, 0.8)", backdropFilter: "blur(12px)" }}
         >
           <div className="flex items-center gap-2 text-[13px]">
             <Link href="/" className="hover:underline" style={{ color: "var(--text-muted)" }}>Prisciane.AI</Link>
@@ -36,7 +36,7 @@ export default function Sobre() {
                     Conheça
                   </p>
                   <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-2 heading-serif" style={{ color: "var(--foreground)" }}>
-                    Prisciane<span className="text-gold italic">.AI</span>
+                    Prisciane<span className="text-peach italic">.AI</span>
                   </h2>
                   <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
                     Sua Mentora De Bolso

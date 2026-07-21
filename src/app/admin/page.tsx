@@ -102,7 +102,7 @@ export default async function AdminPage() {
       <main className="flex-1 flex flex-col min-w-0 gradient-warm overflow-hidden">
         <header
           className="flex items-center justify-between px-6 py-3 border-b shrink-0"
-          style={{ borderColor: "var(--border)", background: "rgba(10, 8, 6, 0.8)", backdropFilter: "blur(12px)" }}
+          style={{ borderColor: "var(--border)", background: "rgba(13, 3, 11, 0.8)", backdropFilter: "blur(12px)" }}
         >
           <div className="flex items-center gap-2 text-[13px]">
             <Link href="/" className="hover:underline" style={{ color: "var(--text-muted)" }}>
@@ -124,7 +124,7 @@ export default async function AdminPage() {
                 Acesso restrito
               </p>
               <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2 heading-serif" style={{ color: "var(--foreground)" }}>
-                Painel <span className="text-gold italic">administrativo</span>
+                Painel <span className="text-peach italic">administrativo</span>
               </h2>
               <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
                 Estatísticas e conversas dos usuários da plataforma.
@@ -203,8 +203,8 @@ export default async function AdminPage() {
                         <span
                           className="inline-block text-[10px] px-2 py-0.5 rounded-full"
                           style={{
-                            background: c.is_complete ? "rgba(34, 197, 94, 0.1)" : "var(--surface-light)",
-                            color: c.is_complete ? "rgb(34, 197, 94)" : "var(--text-muted)",
+                            background: c.is_complete ? "rgba(46, 228, 116, 0.1)" : "var(--surface-light)",
+                            color: c.is_complete ? "var(--money-green)" : "var(--text-muted)",
                           }}
                         >
                           {c.is_complete ? "Completa" : "Em andamento"}

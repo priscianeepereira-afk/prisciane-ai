@@ -23,10 +23,7 @@ export default async function LoginPage({
               className="w-full h-full object-cover"
             />
           </div>
-          <h1
-            className="text-3xl font-semibold heading-serif mb-1"
-            style={{ color: "var(--accent-light)" }}
-          >
+          <h1 className="text-3xl font-semibold heading-serif mb-1 text-peach">
             Prisciane.AI
           </h1>
           <p
@@ -52,7 +49,7 @@ export default async function LoginPage({
             <div
               className="p-3 rounded-lg text-[12px]"
               style={{
-                background: "rgba(178, 81, 27, 0.1)",
+                background: "rgba(224, 141, 75, 0.1)",
                 color: "var(--accent-light)",
                 border: "1px solid var(--accent)",
               }}

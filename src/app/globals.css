@@ -1,24 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #080604;
-  --foreground: #f5f0e8;
-  --accent: #B2511B;
-  --accent-light: #C45E25;
-  --accent-dark: #5C2700;
-  --accent-glow: rgba(178, 81, 27, 0.12);
-  --accent-glow-strong: rgba(178, 81, 27, 0.25);
-  --gold: #C8963E;
-  --gold-light: rgba(200, 150, 62, 0.15);
-  --surface: #0e0c08;
-  --surface-raised: #141210;
-  --surface-light: #1a1814;
-  --surface-hover: #22201a;
-  --border: #1e1c16;
-  --border-light: #2a2720;
-  --text-secondary: #9a9080;
-  --text-muted: #5a5448;
-  --warm-black: #0a0806;
+  --background: #0D030B;
+  --foreground: #F7F1EC;
+  --accent: #E08D4B;
+  --accent-light: #F9BF89;
+  --accent-dark: #8A4A22;
+  --accent-glow: rgba(224, 141, 75, 0.12);
+  --accent-glow-strong: rgba(224, 141, 75, 0.25);
+  --gold: #E4A652;
+  --gold-light: rgba(228, 166, 82, 0.15);
+  --surface: #150710;
+  --surface-raised: #1B0A15;
+  --surface-light: #23101B;
+  --surface-hover: #2C1522;
+  --border: #251320;
+  --border-light: #331D2C;
+  --text-secondary: #A8929F;
+  --text-muted: #705A66;
+  --warm-black: #0A0208;
+  --money-green: #2EE474;
 }
 
 @theme inline {
@@ -78,13 +79,13 @@ body {
 }
 
 @keyframes glow-breathe {
-  0%, 100% { box-shadow: 0 0 6px rgba(178, 81, 27, 0.15); }
-  50% { box-shadow: 0 0 20px rgba(178, 81, 27, 0.35); }
+  0%, 100% { box-shadow: 0 0 6px rgba(228, 166, 82, 0.18); }
+  50% { box-shadow: 0 0 22px rgba(228, 166, 82, 0.4); }
 }
 
 @keyframes border-glow-pulse {
   0%, 100% { border-color: var(--border); }
-  50% { border-color: rgba(178, 81, 27, 0.3); }
+  50% { border-color: rgba(228, 166, 82, 0.35); }
 }
 
 .animate-fade-in {
@@ -101,23 +102,24 @@ body {
 
 /* Gradient backgrounds */
 .gradient-warm {
-  background: radial-gradient(ellipse at 30% 20%, rgba(178, 81, 27, 0.04) 0%, transparent 60%),
-              radial-gradient(ellipse at 80% 80%, rgba(200, 150, 62, 0.02) 0%, transparent 50%);
+  background: radial-gradient(ellipse at 30% 20%, rgba(228, 166, 82, 0.05) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, rgba(224, 141, 75, 0.03) 0%, transparent 50%);
 }
 
 .gradient-hero {
-  background: radial-gradient(ellipse at 20% 50%, rgba(178, 81, 27, 0.07) 0%, transparent 50%),
-              radial-gradient(ellipse at 90% 20%, rgba(200, 150, 62, 0.04) 0%, transparent 40%);
+  background: radial-gradient(ellipse at 50% -10%, rgba(228, 166, 82, 0.10) 0%, transparent 55%),
+              radial-gradient(ellipse at 20% 50%, rgba(224, 141, 75, 0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 90% 20%, rgba(228, 166, 82, 0.05) 0%, transparent 40%);
 }
 
 .gradient-sidebar {
-  background: linear-gradient(180deg, #0e0c08 0%, #0a0806 100%);
+  background: linear-gradient(180deg, #150710 0%, #0A0208 100%);
 }
 
 /* Shimmer line */
 .shimmer-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(200, 150, 62, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(228, 166, 82, 0.35), transparent);
   background-size: 200% 100%;
   animation: shimmer 3s ease-in-out infinite;
 }
@@ -130,9 +132,9 @@ body {
 }
 
 .card-luxury:hover {
-  border-color: rgba(178, 81, 27, 0.3);
-  box-shadow: 0 4px 24px rgba(178, 81, 27, 0.06),
-              inset 0 1px 0 rgba(178, 81, 27, 0.05);
+  border-color: rgba(228, 166, 82, 0.35);
+  box-shadow: 0 4px 24px rgba(228, 166, 82, 0.08),
+              inset 0 1px 0 rgba(228, 166, 82, 0.06);
   transform: translateY(-1px);
 }
 
@@ -144,8 +146,8 @@ body {
 
 .input-luxury:focus-within {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(178, 81, 27, 0.08),
-              0 0 16px rgba(178, 81, 27, 0.06);
+  box-shadow: 0 0 0 3px rgba(224, 141, 75, 0.1),
+              0 0 16px rgba(228, 166, 82, 0.08);
 }
 
 /* Particles effect */
@@ -160,9 +162,9 @@ body {
   position: absolute;
   width: 2px;
   height: 2px;
-  background: var(--accent);
+  background: var(--gold);
   border-radius: 50%;
-  opacity: 0.2;
+  opacity: 0.25;
 }
 
 .particles::before {
@@ -170,10 +172,10 @@ body {
   left: 15%;
   animation: float-particle 4s ease-in-out infinite;
   box-shadow:
-    40px 30px 0 0 rgba(200, 150, 62, 0.15),
-    120px -20px 0 0 rgba(200, 150, 62, 0.1),
-    200px 50px 0 0 rgba(200, 150, 62, 0.2),
-    80px 80px 0 0 rgba(200, 150, 62, 0.08);
+    40px 30px 0 0 rgba(228, 166, 82, 0.18),
+    120px -20px 0 0 rgba(228, 166, 82, 0.12),
+    200px 50px 0 0 rgba(228, 166, 82, 0.22),
+    80px 80px 0 0 rgba(228, 166, 82, 0.1);
 }
 
 .particles::after {
@@ -181,9 +183,9 @@ body {
   right: 20%;
   animation: float-particle 5s ease-in-out 1s infinite;
   box-shadow:
-    -30px -40px 0 0 rgba(200, 150, 62, 0.12),
-    -100px 20px 0 0 rgba(200, 150, 62, 0.08),
-    50px -60px 0 0 rgba(200, 150, 62, 0.15);
+    -30px -40px 0 0 rgba(228, 166, 82, 0.15),
+    -100px 20px 0 0 rgba(228, 166, 82, 0.1),
+    50px -60px 0 0 rgba(228, 166, 82, 0.18);
 }
 
 /* Status indicator */
@@ -198,7 +200,7 @@ body {
   right: -1px;
   width: 8px;
   height: 8px;
-  background: #22c55e;
+  background: var(--money-green);
   border-radius: 50%;
   border: 2px solid var(--surface);
 }
@@ -208,9 +210,17 @@ body {
   font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
 }
 
-/* Gold text gradient */
+/* Gold text gradient — ouro champanhe metálico (estilo V.I.R.A.L) */
 .text-gold {
-  background: linear-gradient(135deg, #B2511B 0%, #8A3D12 50%, #5C2700 100%);
+  background: linear-gradient(180deg, #F0E287 0%, #E4A652 55%, #BC8038 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Peach text gradient — pêssego → creme (estilo "Obrigada!" / palavras-destaque) */
+.text-peach {
+  background: linear-gradient(100deg, #F8B87C 0%, #F9BF89 40%, #FEFAF6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -242,11 +252,11 @@ body {
 
 /* Gradient button */
 .btn-gradient {
-  background: linear-gradient(145deg, #B2511B, #5C2700);
+  background: linear-gradient(145deg, #E08D4B, #A5561F);
 }
 
 /* Divider */
 .divider-gold {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(200, 150, 62, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(228, 166, 82, 0.25), transparent);
 }

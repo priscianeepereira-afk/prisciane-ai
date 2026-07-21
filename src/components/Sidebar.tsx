@@ -250,7 +250,7 @@ export default function Sidebar({
         )}
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--money-green)" }} />
             <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>Online</span>
           </div>
           <button

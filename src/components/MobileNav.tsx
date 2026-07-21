@@ -14,21 +14,21 @@ export default function MobileNav({ activePage }: MobileNavProps) {
         <Link
           href="/"
           className="text-[12px] heading-serif font-medium transition-colors"
-          style={{ color: activePage === "chat" ? "#B2511B" : "var(--text-muted)" }}
+          style={{ color: activePage === "chat" ? "var(--accent)" : "var(--text-muted)" }}
         >
           Análise
         </Link>
         <Link
           href="/metodologia"
           className="text-[12px] heading-serif font-medium transition-colors"
-          style={{ color: activePage === "metodologia" ? "#B2511B" : "var(--text-muted)" }}
+          style={{ color: activePage === "metodologia" ? "var(--accent)" : "var(--text-muted)" }}
         >
           Metodologia
         </Link>
         <Link
           href="/sobre"
           className="text-[12px] heading-serif font-medium transition-colors"
-          style={{ color: activePage === "sobre" ? "#B2511B" : "var(--text-muted)" }}
+          style={{ color: activePage === "sobre" ? "var(--accent)" : "var(--text-muted)" }}
         >
           Sobre
         </Link>
